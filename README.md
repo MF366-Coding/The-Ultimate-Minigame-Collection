@@ -1,25 +1,18 @@
-# The Wild Cards
-This is a game where you fight with your cards.
-**CARDS GIVEAWAYS ON DISCORD AND GITHUB!**
+# The Ultimate Minigame Collection
+This is a game where you can simply have fun...
+**We are asking for brand new jokes for the Jokes mode! Only appropriate jokes please.**
 
 ## Fight your BFF and go toxic on him/her 😉😅
-Download cards and use them against the other player and show what you're made of. 
-
-## Anyone can create cards! 
-Talk to me on Discord for creating cards. It's easy but there are some rules to follow. 😯🤔
+Show what you're made of by scoring more than 100... or maybe not!
 
 ## Just because you won, please do not RickRoll your friend
-It is a really evil punishment. Instead, ask them for the Best cards ever!!! 😎 
+It is a really evil punishment. Instead, beat their best score and friendly roast them! Yep, you just lost a friend. 😎 
 
 ## I am always fixing my code... 
 Except when I am not. But that is only when I can't. 🤡😆
 
-## If you lost, create a fake log file... 
-Claiming that you won. 😉😂
-
 ## Anyways,... 
-Thanks, norbcodes and EndoBotM. 
+Thanks, norbcodes (general coding stuff) and EndoBotM (renders I sadly never used). 
 
 ## See ya... 
 Hope you enjoy my game... 😉😁
-
