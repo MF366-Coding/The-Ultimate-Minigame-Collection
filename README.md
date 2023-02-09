@@ -15,7 +15,7 @@ It is a really evil punishment. Instead, beat their best score and friendly roas
 Except when I am not. But that is only when I can't. 🤡😆
 
 ## Anyways,... 
-Thanks, norbcodes (general coding stuff) and EndoBotM (renders I sadly never used). 
+Thanks, @norbcodes (general coding stuff) and @EndoBotM (renders I sadly never used). 
 
 ## See ya... 
 Hope you enjoy my game... 😉😁
