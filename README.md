@@ -1,6 +1,9 @@
 # The Ultimate Minigame Collection
-This is a game where you can simply have fun...
+This is a console game where you can simply have fun...
+
 **We are asking for brand new jokes for the Jokes mode! Only appropriate jokes please.**
+
+Note: you must run the main.py file - not the others!!!
 
 ## Fight your BFF and go toxic on him/her 😉😅
 Show what you're made of by scoring more than 100... or maybe not!
