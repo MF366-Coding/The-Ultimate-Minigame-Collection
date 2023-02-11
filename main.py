@@ -1,10 +1,9 @@
-
 '''
 Entire code by: MF366
 UwU
 GitHub | Discord | YouTube (for Gaming)
 
-Hope you enjot this game.
+Hope you enjoy this game.
 
 More minigames to come as soon as possible.
 '''
