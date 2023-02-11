@@ -12,7 +12,7 @@ More minigames to come as soon as possible.
 import numRand
 from sys import platform as pf
 from os import system
-from random import randint
+from random import randint, shuffle
 import botTalker
 import swapSentence
 import webbrowser
@@ -55,7 +55,7 @@ if __name__ == '__main__':
         toolPicker = str(input("Please select a tool.\n[1] SentenceInvertor\nType here please: "))
         if toolPicker == '1':
             clear()
-            textToSwap = str(input("Type the sentece you would like to invert here please:\n"))
+            textToSwap = str(input("Type the sentence you would like to invert here please:\n"))
             clear()
             swapSentence.professionalSwapper(textToSwap=textToSwap)
     if firstPicker == '3':
@@ -68,12 +68,23 @@ if __name__ == '__main__':
                 jokesExtract = jokesFile.read()
                 jokes = jokesExtract.split('//')
                 jokesFile.close()
+
             quittingAsk = False # Nice line
-            while quittingAsk == False:
-                tellJoke = str(input(str(jokes[randint(0, 1)]+'\n')))
+
+            jokeArray = []
+            def regenJokes():
+                global jokeArray
+                jokeArray = jokes.copy()
+                shuffle(jokeArray)
+
+            while not quittingAsk:
+                if len(jokeArray) == 0:
+                    regenJokes()
+                tellJoke = str(input(str(jokeArray.pop(randint(0, len(jokeArray)-1))+'\n')))
                 if tellJoke == 'quit':
                     quittingAsk = True
                     quit()
+
         if extraPicker == '2':
             clear()
             print('I am your AI BFF.\nJk lmao How could I be friends with something like you?\nAnyways, rules are simple.\nI may have robbed some people and now...\n...well, I have to keep recommending you some games to play! (that is my punishment)\nHit ENTER to skip and quit to... well: quit!!\nDaaah... (i really dont want to do this)\nYou should play....\n')
@@ -82,7 +93,7 @@ if __name__ == '__main__':
                 games = gamesExtract.split('//')
                 gamesFile.close()
             quittingAsk = False
-            while quittingAsk == False:
+            while not quittingAsk:
                 recommendGame = str(input(str(games[randint(0, 23)]+'\n')))
                 if recommendGame == 'quit':
                     quittingAsk = True

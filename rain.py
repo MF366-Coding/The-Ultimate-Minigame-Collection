@@ -145,7 +145,7 @@ def gameEngine(number):
         input("All this for nothing...\nWhy?\nWhy do I exist?\nI always fail!\n")
         input("[BUSINESS OWNER] Wrong.\nThere is something you never fail to do and that is...\n")
         input("What? What is it?\n")
-        input("[BUSINESS OWNER] The only one thing where you never fail...\nIs to dissapoint!\n")
+        input("[BUSINESS OWNER] The only one thing where you never fail...\nIs to disappoint!\n")
         input("I'm going home...\n[At HOME] Bobby (the dog), wassup fella?\n")
         input("I didn't get the job but whatever...\nI'm kinda sad, you know...\n")
         input("I hope my life gets betteeeeeeer...\n[TRIPPED DOWN THE STAIRS]\nB-b-obby...\n[BLACKS OUT]\n")
