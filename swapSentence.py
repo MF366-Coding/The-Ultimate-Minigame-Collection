@@ -1,27 +1,15 @@
 # Minigame by MF366
 
-from os import system
-from sys import platform as pf
+from clsCmd import clear
 import webbrowser
-
-# Find the system
-clearingCommand = 'NULL'
-if pf == "linux" or pf == "linux2" or pf == "darwin":
-    clearingCommand = 'clear'
-elif pf == "win32":
-    clearingCommand = 'cls'
-
-# Functions
-def clsCmd():
-    system(clearingCommand)
     
 def professionalSwapper(textToSwap):
-    clsCmd()
+    clear()
     swappedText = textToSwap[::-1]
     print("Given sentence: "+textToSwap+"\nInverted sentence: "+swappedText+"\n")
     review = str(input("Is this correct?\nType 'yes' or 'no' here please: "))
     if review == 'yes':
-        clsCmd()
+        clear()
         print('Thank you!\n')
         quit()
     if review == 'no':
