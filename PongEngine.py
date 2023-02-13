@@ -4,9 +4,8 @@
 from clsCmd import clear
 from math import radians, degrees
 from random import randint
-import pygame
-
-pygame.init()
+from time import sleep
+import keyboard
 
 # CONSTANTS
 FPS = 10
@@ -82,15 +81,52 @@ class World:
         if self.Ball_X > self.MapW-2 or self.Ball_X < 2:
             self.Ball_Vel[1] *= -1
 
+        if self.Ball_X not in range(12, self.MapW - 12):
+            if self.Ball_X > self.MapW//2:
+                if self.Ball_X > (self.MapW - self.Pad_x - 4) and self.Ball_Y in range(self.P2_pad_y-2, self.P2_pad_y+2):
+                    self.Ball_Vel[1] *= -1
+            else:
+                if self.Ball_X < self.Pad_x + 4 and self.Ball_Y in range(self.P1_pad_y-2, self.P1_pad_y+2):
+                    self.Ball_Vel[1] *= -1
+
         self.Ball_Y += self.Ball_Vel[0]
         self.Ball_X += self.Ball_Vel[1]
+
+    def MovePad(self, which, dir):
+        if which:
+            if self.P1_pad_y + (1 if dir else -1) in range(2, self.MapH-2):
+                self.P1_pad_y += 1 if dir else -1
+        else:
+            if self.P2_pad_y + (1 if dir else -1) in range(2, self.MapH - 2):
+                self.P2_pad_y += 1 if dir else -1
 
 if __name__ == '__main__':
     gameRunning = True
     World = World()
     World.Render()
-    Clock = pygame.time.Clock()
+    #       W      S      UP     DOWN
+    KEYS = [False, False, False, False]
     while gameRunning:
-        Clock.tick(10)
+        sleep(1/FPS)
+
+        KEYS = [False, False, False, False]
+        if keyboard.is_pressed('W'):
+            KEYS[0] = True
+        if keyboard.is_pressed('S'):
+            KEYS[1] = True
+        if keyboard.is_pressed('UP'):
+            KEYS[2] = True
+        if keyboard.is_pressed('DOWN'):
+            KEYS[3] = True
+
+        if KEYS[0]:
+            World.MovePad(True, False)
+        if KEYS[1]:
+            World.MovePad(True, True)
+        if KEYS[2]:
+            World.MovePad(False, False)
+        if KEYS[3]:
+            World.MovePad(False, True)
+
         World.Render()
         World.AdvanceBall()
