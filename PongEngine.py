@@ -8,14 +8,18 @@ from time import sleep
 import keyboard
 
 # CONSTANTS
-FPS = 10
+FPS = 15
 TITLE = ''
 NUMBERS = []
 
 def LoadText():
     global TITLE
     txt = open('PongTitles.txt', 'rt', encoding='UTF-8')
-    for x in txt.readlines(9): TITLE += x
+    for _ in range(8): TITLE += txt.readline()
+    for _ in range(11):
+        temp = ''
+        for z in range(8): temp += txt.readline()
+        NUMBERS.append(temp)
 
 class World:
     P1_pad_y = None  # Initialize during object creation
@@ -28,6 +32,7 @@ class World:
     MapH = 21
 
     StartPrompt = None
+    Paused = None
 
     def __init__(self):
         self.P1_pad_y = self.MapH//2
@@ -36,6 +41,7 @@ class World:
         self.Ball_X = self.MapW//2
         self.Ball_Vel = [1, 2]
         self.StartPrompt = True
+        self.Paused = True
 
     def Render(self):
         clear()
@@ -48,7 +54,7 @@ class World:
         for x in range(5):
             output[self.Pad_x + ((pos+x) * self.MapW)] = '▉'
 
-        # Pad 1
+        # Pad 2
         pos = self.P2_pad_y - 2
         for x in range(5):
             output[(self.MapW - self.Pad_x - 1) + ((pos + x) * self.MapW)] = '▉'
@@ -61,6 +67,12 @@ class World:
 
         # Render ball
         output[self.Ball_X + (self.Ball_Y * self.MapW)] = '0'
+
+        if self.StartPrompt:
+            text = "Press Enter to play. Press ESC to quit at any time. Press P to pause."
+            x, y = (self.MapW - len(text))//2, 3
+            for char in range(len(text)):
+                output[(x + char) + (y * self.MapW)] = text[char]
 
         indx = 0
         for x in output:
@@ -101,6 +113,8 @@ class World:
                 self.P2_pad_y += 1 if dir else -1
 
 if __name__ == '__main__':
+    LoadText()
+
     gameRunning = True
     World = World()
     World.Render()
@@ -108,6 +122,19 @@ if __name__ == '__main__':
     KEYS = [False, False, False, False]
     while gameRunning:
         sleep(1/FPS)
+
+        if keyboard.is_pressed('ESC'):
+            break
+
+        if World.StartPrompt and World.Paused and keyboard.is_pressed('\n'):
+            World.Paused = not World.Paused
+            World.StartPrompt = False
+
+        if keyboard.is_pressed('P'):
+            World.Paused = not World.Paused
+
+        if World.Paused:
+            continue
 
         KEYS = [False, False, False, False]
         if keyboard.is_pressed('W'):
