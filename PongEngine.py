@@ -28,8 +28,8 @@ class World:
     Ball_X = None
     Ball_Y = None
     Ball_Vel = [None, None]
-    MapW = 81
-    MapH = 21
+    MapW = 106
+    MapH = 25
     Score = [None, None]
     BallRespawnTime = FPS * 2  # 5 seconds.
     BallRespawnTimer = None
@@ -134,7 +134,7 @@ class World:
                 if self.Ball_X > (self.MapW - self.Pad_x - 4) and self.Ball_Y in range(self.P2_pad_y-3, self.P2_pad_y+3):
                     self.Ball_Vel[1] *= -1
             else:
-                if self.Ball_X < self.Pad_x + 4 and self.Ball_Y in range(self.P1_pad_y-3, self.P1_pad_y+3):
+                if self.Ball_X < (self.Pad_x + 3) and self.Ball_Y in range(self.P1_pad_y-3, self.P1_pad_y+3):
                     self.Ball_Vel[1] *= -1
 
         self.Ball_Y += self.Ball_Vel[0]
