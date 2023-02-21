@@ -35,6 +35,8 @@ class World:
     BallRespawnTimer = None
 
     StartPrompt = None
+    VictoryCondition = False
+    Winner = None  # 1 = Player 1 won, Player 2 won
     Paused = None
 
     def __init__(self):
@@ -43,9 +45,10 @@ class World:
         self.Ball_Y = self.MapH//2
         self.Ball_X = self.MapW//2
         self.Ball_Vel = [1, 2]
-        self.StartPrompt = True
-        self.Paused = True
-        self.Score = [0, 0]
+        self.StartPrompt = False
+        self.Paused = False
+        self.Score = [9, 9]
+        self.Winner = None
         self.BallRespawnTimer = 0
 
     def Render(self):
@@ -54,15 +57,16 @@ class World:
         output = [' ' for _ in range(self.MapH * self.MapW)]
 
         # Render pads
-        # Pad 1
-        pos = self.P1_pad_y-2
-        for x in range(5):
-            output[self.Pad_x + ((pos+x) * self.MapW)] = '▉'
+        if not self.VictoryCondition:
+            # Pad 1
+            pos = self.P1_pad_y-2
+            for x in range(5):
+                output[self.Pad_x + ((pos+x) * self.MapW)] = '▉'
 
-        # Pad 2
-        pos = self.P2_pad_y - 2
-        for x in range(5):
-            output[(self.MapW - self.Pad_x - 1) + ((pos + x) * self.MapW)] = '▉'
+            # Pad 2
+            pos = self.P2_pad_y - 2
+            for x in range(5):
+                output[(self.MapW - self.Pad_x - 1) + ((pos + x) * self.MapW)] = '▉'
 
         # Render center line
         LineX, LineY = self.MapW//2, 0
@@ -82,17 +86,52 @@ class World:
 
         # Render score, if Start Prompt is not shown.
         if not self.StartPrompt:
-            score1 = NUMBERS[self.Score[0]]
-            x, y = self.MapW//2 - 7, 1
-            for A in range(5):
-                for B in range(5):
-                    output[x+B + ((y+A) * self.MapW)] = score1[B + (A * 5)]
+            if not self.VictoryCondition:
+                score1 = NUMBERS[self.Score[0]]
+                x, y = self.MapW // 2 - 7, 1
+                for A in range(5):
+                    for B in range(5):
+                        output[x + B + ((y + A) * self.MapW)] = score1[B + (A * 5)]
 
-            score2 = NUMBERS[self.Score[1]]
-            x, y = self.MapW // 2 + 3, 1
-            for A in range(5):
-                for B in range(5):
-                    output[x + B + ((y + A) * self.MapW)] = score2[B + (A * 5)]
+                score2 = NUMBERS[self.Score[1]]
+                x, y = self.MapW // 2 + 3, 1
+                for A in range(5):
+                    for B in range(5):
+                        output[x + B + ((y + A) * self.MapW)] = score2[B + (A * 5)]
+
+            if self.Winner == 1:
+                x, y = self.MapW // 2 - 7, 1
+                for A in range(5):
+                    for B in range(5):
+                        output[x + B + ((y + A) * self.MapW)] = NUMBERS[0][B + (A * 5)]
+
+                x, y = self.MapW // 2 - 14, 1
+                for A in range(5):
+                    for B in range(5):
+                        output[x + B + ((y + A) * self.MapW)] = NUMBERS[1][B + (A * 5)]
+
+                scoreL = NUMBERS[self.Score[1]]
+                x, y = self.MapW // 2 + 3, 1
+                for A in range(5):
+                    for B in range(5):
+                        output[x + B + ((y + A) * self.MapW)] = scoreL[B + (A * 5)]
+
+            if self.Winner == 2:
+                x, y = self.MapW // 2 + 10, 1
+                for A in range(5):
+                    for B in range(5):
+                        output[x + B + ((y + A) * self.MapW)] = NUMBERS[0][B + (A * 5)]
+
+                x, y = self.MapW // 2 + 3, 1
+                for A in range(5):
+                    for B in range(5):
+                        output[x + B + ((y + A) * self.MapW)] = NUMBERS[1][B + (A * 5)]
+
+                scoreL = NUMBERS[self.Score[0]]
+                x, y = self.MapW // 2 - 7, 1
+                for A in range(5):
+                    for B in range(5):
+                        output[x + B + ((y + A) * self.MapW)] = scoreL[B + (A * 5)]
 
         indx = 0
         for x in output:
@@ -114,28 +153,41 @@ class World:
             self.Ball_Vel[0] *= -1
 
         if self.Ball_X > self.MapW-2 or self.Ball_X < 2:
-            if self.Ball_X < self.MapW//2:
-                self.Score[1] += 1
-                self.BallRespawnTimer = self.BallRespawnTime
-                self.Ball_Y, self.Ball_X = self.MapH // 2, self.MapW // 2
-                self.Ball_Vel[0] *= choice((-1, 1))
-                self.Ball_Vel[1] *= choice((-1, 1))
+            if not self.VictoryCondition:
+                if self.Ball_X < self.MapW//2:
+                    self.Score[1] += 1
+                    self.BallRespawnTimer = self.BallRespawnTime
+                    self.Ball_Y, self.Ball_X = self.MapH // 2, self.MapW // 2
+                    self.Ball_Vel[0] *= choice((-1, 1))
+                    self.Ball_Vel[1] *= choice((-1, 1))
+                else:
+                    self.Score[0] += 1
+                    self.BallRespawnTimer = self.BallRespawnTime
+                    self.Ball_Y, self.Ball_X = self.MapH // 2, self.MapW // 2
+                    self.Ball_Vel[0] *= choice((-1, 1))
+                    self.Ball_Vel[1] *= choice((-1, 1))
+
+                if self.Score[0] == 10 or self.Score[1] == 10:
+                    self.VictoryCondition = True
+                    self.Winner = 1 if self.Score[0] == 10 else 2
+                    self.Ball_Vel[0] *= choice((-1, 1))
+                    self.Ball_Vel[1] *= choice((-1, 1))
+                    self.Ball_Y, self.Ball_X = self.MapH // 2, self.MapW // 2
+                    self.BallRespawnTimer = 0
+                    return
+
                 return
-
-            self.Score[0] += 1
-            self.BallRespawnTimer = self.BallRespawnTime
-            self.Ball_Y, self.Ball_X = self.MapH // 2, self.MapW // 2
-            self.Ball_Vel[0] *= choice((-1, 1))
-            self.Ball_Vel[1] *= choice((-1, 1))
-            return
-
-        if self.Ball_X not in range(12, self.MapW - 12):
-            if self.Ball_X > self.MapW//2:
-                if self.Ball_X > (self.MapW - self.Pad_x - 4) and self.Ball_Y in range(self.P2_pad_y-3, self.P2_pad_y+3):
-                    self.Ball_Vel[1] *= -1
             else:
-                if self.Ball_X < (self.Pad_x + 3) and self.Ball_Y in range(self.P1_pad_y-3, self.P1_pad_y+3):
-                    self.Ball_Vel[1] *= -1
+                self.Ball_Vel[1] *= -1
+
+        if not self.VictoryCondition:
+            if self.Ball_X not in range(12, self.MapW - 12):
+                if self.Ball_X > self.MapW//2:
+                    if self.Ball_X > (self.MapW - self.Pad_x - 4) and self.Ball_Y in range(self.P2_pad_y-3, self.P2_pad_y+3):
+                        self.Ball_Vel[1] *= -1
+                else:
+                    if self.Ball_X < (self.Pad_x + 3) and self.Ball_Y in range(self.P1_pad_y-3, self.P1_pad_y+3):
+                        self.Ball_Vel[1] *= -1
 
         self.Ball_Y += self.Ball_Vel[0]
         self.Ball_X += self.Ball_Vel[1]
@@ -195,5 +247,5 @@ if __name__ == '__main__':
         if World.BallRespawnTimer != 0:
             World.BallRespawnTimer -= 1
 
-        World.Render()
         World.AdvanceBall()
+        World.Render()
