@@ -47,7 +47,7 @@ class World:
         self.Ball_Vel = [1, 2]
         self.StartPrompt = False
         self.Paused = False
-        self.Score = [9, 9]
+        self.Score = [0, 0]
         self.Winner = None
         self.BallRespawnTimer = 0
 
