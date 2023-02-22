@@ -45,8 +45,8 @@ class World:
         self.Ball_Y = self.MapH//2
         self.Ball_X = self.MapW//2
         self.Ball_Vel = [1, 2]
-        self.StartPrompt = False
-        self.Paused = False
+        self.StartPrompt = True
+        self.Paused = True
         self.Score = [0, 0]
         self.Winner = None
         self.BallRespawnTimer = 0
