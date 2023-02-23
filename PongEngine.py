@@ -33,13 +33,17 @@ class World:
     Score = [None, None]
     BallRespawnTime = FPS * 2  # 5 seconds.
     BallRespawnTimer = None
+    AI_Mode = None
+    AI_Memory = None
+    AI_Pad_Move_Count = None
+    AI_Pad_Move_Dir = None
 
     StartPrompt = None
     VictoryCondition = False
     Winner = None  # 1 = Player 1 won, Player 2 won
     Paused = None
 
-    def __init__(self):
+    def __init__(self, AI):
         self.P1_pad_y = self.MapH//2
         self.P2_pad_y = self.MapH//2
         self.Ball_Y = self.MapH//2
@@ -50,6 +54,9 @@ class World:
         self.Score = [0, 0]
         self.Winner = None
         self.BallRespawnTimer = 0
+        self.AI_Memory = []
+        self.AI_Mode = AI
+        self.AI_Pad_Move_Count = 0
 
     def Render(self):
         clear()
@@ -192,19 +199,57 @@ class World:
         self.Ball_Y += self.Ball_Vel[0]
         self.Ball_X += self.Ball_Vel[1]
 
+    def ProcessAI(self):
+        if not self.AI_Mode:
+            return
+
+        if self.AI_Pad_Move_Count != 0:
+            if self.P2_pad_y + (-1 if self.AI_Pad_Move_Dir else 1) in range(2, self.MapH - 2):
+                self.P2_pad_y += -1 if self.AI_Pad_Move_Dir else 1
+                self.AI_Pad_Move_Count -= 1
+            else:
+                self.AI_Pad_Move_Count = 0
+                self.AI_Pad_Move_Dir = None
+                return
+
+            if self.AI_Pad_Move_Count == 0:
+                self.AI_Pad_Move_Dir = None
+            return
+
+        if self.Ball_X > self.MapW//2:
+            if len(self.AI_Memory) != 2 and self.AI_Pad_Move_Count == 0:
+                self.AI_Memory.append((self.Ball_Y, self.Ball_X))
+
+            if len(self.AI_Memory) == 2:
+                # AI_Memory stores the first captured frame at index 0 and the second frame at index 1.
+                # We can use this to get the amount of tiles the ball moved since the last frame.
+                deltaY = self.AI_Memory[0][0] - self.AI_Memory[1][0]
+                deltaX = abs(self.AI_Memory[0][1] - self.AI_Memory[1][1])
+                if deltaY > 0:
+                    dir = True
+                if deltaY < 0:
+                    dir = False
+                deltaY = abs(deltaY)
+                # if dir is True, then we move up, else we move down.
+                BP_Distance = abs(self.Ball_X - (self.MapW - self.Pad_x)) # BP as in, Ball Pad distance
+                # Subtracting self.Pad_x from self.MapW gives you the X coordinate of the second pad
+                self.AI_Pad_Move_Count = self.Ball_Y + (deltaY * (BP_Distance // deltaX))
+                self.AI_Pad_Move_Dir = dir
+                self.AI_Memory.clear()
+
     def MovePad(self, which, dir):
         if which:
             if self.P1_pad_y + (1 if dir else -1) in range(2, self.MapH-2):
                 self.P1_pad_y += 1 if dir else -1
-        else:
-            if self.P2_pad_y + (1 if dir else -1) in range(2, self.MapH - 2):
-                self.P2_pad_y += 1 if dir else -1
+            return
+        if self.P2_pad_y + (1 if dir else -1) in range(2, self.MapH - 2):
+            self.P2_pad_y += 1 if dir else -1
 
 if __name__ == '__main__':
     LoadText()
 
     gameRunning = True
-    World = World()
+    World = World(True)
     World.Render()
     #       W      S      UP     DOWN
     KEYS = [False, False, False, False]
@@ -246,6 +291,8 @@ if __name__ == '__main__':
 
         if World.BallRespawnTimer != 0:
             World.BallRespawnTimer -= 1
+
+        World.ProcessAI()
 
         World.AdvanceBall()
         World.Render()
