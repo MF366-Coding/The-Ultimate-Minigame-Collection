@@ -16,13 +16,12 @@ import swapSentence
 import webbrowser
 from clsCmd import clear
 import rain
-import garbage
+import tSp
 
 '''
 To Do:
 - Minigame: Pong (Norb)
 - Tools (Me)
-- Minigame Bugs: Fix bugs in Empty the garbage (Me)
 '''
 
 # Minigame Picker
@@ -37,11 +36,8 @@ if __name__ == '__main__':
     firstPicker = str(input(str(textkoolExtract)+"\nWelcome back, "+playerNameExtract+"!\nPlease select an option.\n[1] Minigames\n[2] Utilities\n[3] Extra options\n[4] Settings n' Info\nType here please: "))
     if firstPicker == '1':
         clear()
-        minigamePicker = str(input("Please select a minigame.\n[1] Empty the Garbage\n[2] RandomGuesser\nType here please: "))
+        minigamePicker = str(input("Please select a minigame.\n[1] RandomGuesser\n[2] CloseThemAll\nType here please: "))
         if minigamePicker == '1':
-            clear()
-            garbage.StartUp()
-        elif minigamePicker == '2':
             clear()
             randPicker = str(input("Select a difficulty.\n[1] Easy\n[2] Normal\n[3] Hard\n[4] Impossible\nType here please: "))
             if randPicker == '1':
@@ -56,6 +52,9 @@ if __name__ == '__main__':
             if randPicker == '4':
                 clear()
                 numRand.extremeMode()
+        elif minigamePicker == '2':
+            clear()
+            tSp.infoPopup()
     if firstPicker == '2':
         clear()
         toolPicker = str(input("Please select a tool.\n[1] SentenceInvertor\nType here please: "))
