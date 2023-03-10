@@ -10,7 +10,7 @@ def talkToCarl():
         carlFile.close()
         carl = carlExtract.split('//')
     clear()
-    while not quittingAsk:
+    while quittingAsk == False:
         recommendGame = str(input('Input: '))
         print('Output: '+carl[quittingNumber])
         quittingNumber += 1
@@ -28,7 +28,7 @@ def talkToAnna():
         annaFile.close()
         anna = annaExtract.split('//')
     clear()
-    while not quittingAsk:
+    while quittingAsk == False:
         recommendGame = str(input('Input: '))
         print('Output: '+anna[quittingNumber])
         quittingNumber += 1
@@ -46,7 +46,7 @@ def talkToZang():
         zangFile.close()
         zang = zangExtract.split('//')
     clear()
-    while not quittingAsk:
+    while quittingAsk == False:
         recommendGame = str(input('Input: '))
         print('Output: '+zang[quittingNumber])
         quittingNumber += 1
@@ -64,7 +64,7 @@ def talkToURMOM():
         urmomFile.close()
         urmom = urmomExtract.split('//')
     clear()
-    while not quittingAsk:
+    while quittingAsk == False:
         recommendGame = str(input('Input: '))
         print('Output: '+urmom[quittingNumber]) # Truly a really nice line
         quittingNumber += 1
