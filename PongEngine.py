@@ -5,6 +5,7 @@ from clsCmd import clear
 from math import radians, degrees
 from random import randint, choice
 from time import sleep
+import sys
 import keyboard
 
 # CONSTANTS
@@ -21,7 +22,10 @@ def LoadText():
         for z in range(5): temp += txt.readline().removesuffix('\n')
         NUMBERS.append(temp)
 
-class World:
+def PrintText(text):
+    sys.stdout.write(text)  # lel
+
+class WorldClass:
     P1_pad_y = None  # Initialize during object creation
     P2_pad_y = None
     Pad_x = 4   # Both pads are 4 units away from border
@@ -34,7 +38,6 @@ class World:
     BallRespawnTime = FPS * 2  # 5 seconds.
     BallRespawnTimer = None
     AI_Mode = None
-    AI_Memory = None
     AI_Pad_Move_Count = None
     AI_Pad_Move_Dir = None
 
@@ -43,7 +46,7 @@ class World:
     Winner = None  # 1 = Player 1 won, Player 2 won
     Paused = None
 
-    def __init__(self, AI):
+    def __init__(self, ai):
         self.P1_pad_y = self.MapH//2
         self.P2_pad_y = self.MapH//2
         self.Ball_Y = self.MapH//2
@@ -54,13 +57,12 @@ class World:
         self.Score = [0, 0]
         self.Winner = None
         self.BallRespawnTimer = 0
-        self.AI_Memory = []
-        self.AI_Mode = AI
+        self.AI_Mode = ai
         self.AI_Pad_Move_Count = 0
 
     def Render(self):
         clear()
-        print(' ' + '-' * self.MapW)
+        PrintText(' ' + '-' * self.MapW + '\n')
         output = [' ' for _ in range(self.MapH * self.MapW)]
 
         # Render pads
@@ -68,12 +70,12 @@ class World:
             # Pad 1
             pos = self.P1_pad_y-2
             for x in range(5):
-                output[self.Pad_x + ((pos+x) * self.MapW)] = '▉'
+                output[self.Pad_x + ((pos+x) * self.MapW)] = ']'
 
             # Pad 2
             pos = self.P2_pad_y - 2
             for x in range(5):
-                output[(self.MapW - self.Pad_x - 1) + ((pos + x) * self.MapW)] = '▉'
+                output[(self.MapW - self.Pad_x - 1) + ((pos + x) * self.MapW)] = '['
 
         # Render center line
         LineX, LineY = self.MapW//2, 0
@@ -88,6 +90,12 @@ class World:
         if self.StartPrompt:
             text = "Press Enter to play. Press ESC to quit at any time. Press P to pause."
             x, y = (self.MapW - len(text))//2, 3
+            for char in range(len(text)):
+                output[(x + char) + (y * self.MapW)] = text[char]
+
+        if self.Paused and not self.StartPrompt:
+            text = "--- PAUSED. ---"
+            x, y = (self.MapW - len(text))//2 + 1, self.MapH//2
             for char in range(len(text)):
                 output[(x + char) + (y * self.MapW)] = text[char]
 
@@ -144,13 +152,13 @@ class World:
         for x in output:
             indx += 1
             if indx % self.MapW == 0:
-                print(f'{x}|')
+                PrintText(f'{x}|\n')
                 continue
             if indx % self.MapW == 1:
-                print(f'|{x}', end='')
+                PrintText(f'|{x}')
                 continue
-            print(x, end='')
-        print(' ' + '-' * self.MapW)
+            PrintText(x)
+        PrintText(' ' + '-' * self.MapW + '\n')
 
     def AdvanceBall(self):
         if self.BallRespawnTimer != 0:
@@ -165,20 +173,20 @@ class World:
                     self.Score[1] += 1
                     self.BallRespawnTimer = self.BallRespawnTime
                     self.Ball_Y, self.Ball_X = self.MapH // 2, self.MapW // 2
-                    self.Ball_Vel[0] *= choice((-1, 1))
-                    self.Ball_Vel[1] *= choice((-1, 1))
+                    self.Ball_Vel[0] = choice((-1, 1))
+                    self.Ball_Vel[1] = choice((-2, 2))
                 else:
                     self.Score[0] += 1
                     self.BallRespawnTimer = self.BallRespawnTime
                     self.Ball_Y, self.Ball_X = self.MapH // 2, self.MapW // 2
-                    self.Ball_Vel[0] *= choice((-1, 1))
-                    self.Ball_Vel[1] *= choice((-1, 1))
+                    self.Ball_Vel[0] = choice((-1, 1))
+                    self.Ball_Vel[1] = choice((-2, 2))
 
                 if self.Score[0] == 10 or self.Score[1] == 10:
                     self.VictoryCondition = True
                     self.Winner = 1 if self.Score[0] == 10 else 2
-                    self.Ball_Vel[0] *= choice((-1, 1))
-                    self.Ball_Vel[1] *= choice((-1, 1))
+                    self.Ball_Vel[0] = choice((-1, 1))
+                    self.Ball_Vel[1] = choice((-2, 2))
                     self.Ball_Y, self.Ball_X = self.MapH // 2, self.MapW // 2
                     self.BallRespawnTimer = 0
                     return
@@ -191,10 +199,22 @@ class World:
             if self.Ball_X not in range(12, self.MapW - 12):
                 if self.Ball_X > self.MapW//2:
                     if self.Ball_X > (self.MapW - self.Pad_x - 4) and self.Ball_Y in range(self.P2_pad_y-3, self.P2_pad_y+3):
-                        self.Ball_Vel[1] *= -1
+                        if self.Ball_Y == self.P2_pad_y:
+                            self.Ball_Vel[0] = 0
+                        if self.Ball_Y < self.P2_pad_y:
+                            self.Ball_Vel[0] = -1
+                        if self.Ball_Y > self.P2_pad_y:
+                            self.Ball_Vel[0] = 1
+                        self.Ball_Vel[1] = -2
                 else:
                     if self.Ball_X < (self.Pad_x + 3) and self.Ball_Y in range(self.P1_pad_y-3, self.P1_pad_y+3):
-                        self.Ball_Vel[1] *= -1
+                        if self.Ball_Y == self.P1_pad_y:
+                            self.Ball_Vel[0] = 0
+                        if self.Ball_Y < self.P1_pad_y:
+                            self.Ball_Vel[0] = -1
+                        if self.Ball_Y > self.P1_pad_y:
+                            self.Ball_Vel[0] = 1
+                        self.Ball_Vel[1] = 2
 
         self.Ball_Y += self.Ball_Vel[0]
         self.Ball_X += self.Ball_Vel[1]
@@ -217,25 +237,40 @@ class World:
             return
 
         if self.Ball_X > self.MapW//2:
-            if len(self.AI_Memory) != 2 and self.AI_Pad_Move_Count == 0:
-                self.AI_Memory.append((self.Ball_Y, self.Ball_X))
+            if self.Ball_Y > 20:
+                self.AI_Pad_Move_Count += 3
+                self.AI_Pad_Move_Dir = True
+                return
 
-            if len(self.AI_Memory) == 2:
-                # AI_Memory stores the first captured frame at index 0 and the second frame at index 1.
-                # We can use this to get the amount of tiles the ball moved since the last frame.
-                deltaY = self.AI_Memory[0][0] - self.AI_Memory[1][0]
-                deltaX = abs(self.AI_Memory[0][1] - self.AI_Memory[1][1])
-                if deltaY > 0:
-                    dir = True
-                if deltaY < 0:
-                    dir = False
-                deltaY = abs(deltaY)
-                # if dir is True, then we move up, else we move down.
-                BP_Distance = abs(self.Ball_X - (self.MapW - self.Pad_x)) # BP as in, Ball Pad distance
-                # Subtracting self.Pad_x from self.MapW gives you the X coordinate of the second pad
-                self.AI_Pad_Move_Count = self.Ball_Y + (deltaY * (BP_Distance // deltaX))
-                self.AI_Pad_Move_Dir = dir
-                self.AI_Memory.clear()
+            if self.Ball_Y < 5:
+                self.AI_Pad_Move_Count += 3
+                self.AI_Pad_Move_Dir = False
+                return
+
+            if self.Ball_Y > 17 or self.Ball_Y < 8:
+                return
+
+            if self.P2_pad_y < self.Ball_Y:
+                if not self.AI_Pad_Move_Dir:
+                    self.AI_Pad_Move_Count += abs(self.P2_pad_y - self.Ball_Y)
+                    return
+
+                self.AI_Pad_Move_Count = abs(self.P2_pad_y - self.Ball_Y) * 2
+                self.AI_Pad_Move_Dir = False
+
+            if self.P2_pad_y > self.Ball_Y:
+                if self.AI_Pad_Move_Dir:
+                    self.AI_Pad_Move_Count += abs(self.P2_pad_y - self.Ball_Y)
+                    return
+
+                self.AI_Pad_Move_Count = abs(self.P2_pad_y - self.Ball_Y) * 2
+                self.AI_Pad_Move_Dir = True
+
+            if self.P2_pad_y == self.Ball_Y:
+                self.AI_Pad_Move_Count = randint(1, 2)
+                self.AI_Pad_Move_Dir = choice((True, False))
+
+            # smart fella this ai is
 
     def MovePad(self, which, dir):
         if which:
@@ -247,52 +282,104 @@ class World:
 
 if __name__ == '__main__':
     LoadText()
+    programRunning = True
 
-    gameRunning = True
-    World = World(True)
-    World.Render()
-    #       W      S      UP     DOWN
-    KEYS = [False, False, False, False]
-    while gameRunning:
-        sleep(1/FPS)
+    while programRunning:
+        clear()
+        PrintText(TITLE + '\n')
+        PrintText('Press 1 to play.\n')
+        PrintText('Press 2 for info.\n')
+        PrintText('Press 3 to exit.\n')
 
-        if keyboard.is_pressed('ESC'):
+        keyboard.read_event()
+
+        if keyboard.is_pressed('1'):
+            clear()
+            PrintText(TITLE + '\n')
+            PrintText('Select mode:\n'
+                      '[1] Player VS. Player\n'
+                      '[2] Player VS. AI\n\n'
+                      'Press ESC to return back to main menu.')
+            keyboard.read_event()
+            keyboard.read_event()
+
+            ai_option = None
+            return_back = False
+
+            if keyboard.is_pressed('1'):
+                ai_option = False
+            if keyboard.is_pressed('2'):
+                ai_option = True
+            if keyboard.is_pressed('ESC'):
+                return_back = True
+
+            if not return_back:
+                gameRunning = True
+                World = WorldClass(ai_option)
+                World.Render()
+                #       W      S      UP     DOWN
+                KEYS = [False, False, False, False]
+                # GAME LOOP START
+                while gameRunning:
+                    sleep(1/FPS)
+
+                    if keyboard.is_pressed('ESC'):
+                        break
+
+                    if World.StartPrompt and World.Paused and keyboard.is_pressed('\n'):
+                        World.Paused = not World.Paused
+                        World.StartPrompt = False
+
+                    if keyboard.is_pressed('P'):
+                        World.Paused = not World.Paused
+
+                    KEYS = [False, False, False, False]
+                    if not World.Paused:
+                        if keyboard.is_pressed('W'):
+                            KEYS[0] = True
+                        if keyboard.is_pressed('S'):
+                            KEYS[1] = True
+                        if not World.AI_Mode:
+                            if keyboard.is_pressed('UP'):
+                                KEYS[2] = True
+                            if keyboard.is_pressed('DOWN'):
+                                KEYS[3] = True
+
+                        if World.BallRespawnTimer == 0:
+                            if KEYS[0]:
+                                World.MovePad(True, False)
+                            if KEYS[1]:
+                                World.MovePad(True, True)
+                            if KEYS[2]:
+                                World.MovePad(False, False)
+                            if KEYS[3]:
+                                World.MovePad(False, True)
+
+                        if World.BallRespawnTimer != 0:
+                            World.BallRespawnTimer -= 1
+
+                        World.ProcessAI()
+
+                        World.AdvanceBall()
+                    World.Render()
+                # GAME LOOP END
+
+        if keyboard.is_pressed('2'):
+            clear()
+            PrintText(TITLE + '\n\n')
+            PrintText('Made by Norb for MF366\'s Minigame collection.\n'
+                      'Powered by Python 3.10\n'
+                      'Needed modules: math, random, time, keyboard, sys (Most of these come with the Python STD.)\n'
+                      '\n'
+                      'This was an amazing little side project :)\n'
+                      'I had much fun making this, learned a bit about the keyboard module and helped MF366.\n'
+                      'Hope you\'ll have as much fun playing this as I did making this!\n'
+                      '- Norb, the Dev.\n\n'
+                      'Press any key to return to main menu.')
+            keyboard.read_event()
+            keyboard.read_event()
+
+        if keyboard.is_pressed('3'):
+            programRunning = False
             break
-
-        if World.StartPrompt and World.Paused and keyboard.is_pressed('\n'):
-            World.Paused = not World.Paused
-            World.StartPrompt = False
-
-        if keyboard.is_pressed('P'):
-            World.Paused = not World.Paused
-
-        if World.Paused:
-            continue
-
-        KEYS = [False, False, False, False]
-        if keyboard.is_pressed('W'):
-            KEYS[0] = True
-        if keyboard.is_pressed('S'):
-            KEYS[1] = True
-        if keyboard.is_pressed('UP'):
-            KEYS[2] = True
-        if keyboard.is_pressed('DOWN'):
-            KEYS[3] = True
-
-        if World.BallRespawnTimer == 0:
-            if KEYS[0]:
-                World.MovePad(True, False)
-            if KEYS[1]:
-                World.MovePad(True, True)
-            if KEYS[2]:
-                World.MovePad(False, False)
-            if KEYS[3]:
-                World.MovePad(False, True)
-
-        if World.BallRespawnTimer != 0:
-            World.BallRespawnTimer -= 1
-
-        World.ProcessAI()
-
-        World.AdvanceBall()
-        World.Render()
+    sys.exit()
