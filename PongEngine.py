@@ -280,11 +280,9 @@ class WorldClass:
         if self.P2_pad_y + (1 if dir else -1) in range(2, self.MapH - 2):
             self.P2_pad_y += 1 if dir else -1
 
-if __name__ == '__main__':
+def RunPong():
     LoadText()
-    programRunning = True
-
-    while programRunning:
+    while True:
         clear()
         PrintText(TITLE + '\n')
         PrintText('Press 1 to play.\n')
@@ -380,6 +378,8 @@ if __name__ == '__main__':
             keyboard.read_event()
 
         if keyboard.is_pressed('3'):
-            programRunning = False
             break
     sys.exit()
+
+if __name__ == '__main__':
+    RunPong()
