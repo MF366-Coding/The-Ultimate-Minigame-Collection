@@ -380,6 +380,3 @@ def RunPong():
         if keyboard.is_pressed('3'):
             break
     sys.exit()
-
-if __name__ == '__main__':
-    RunPong()
