@@ -61,7 +61,7 @@ class WorldClass:
         self.AI_Pad_Move_Count = 0
 
     def Render(self):
-        clear()
+        PrintText('\033[H')
         PrintText(' ' + '-' * self.MapW + '\n')
         output = [' ' for _ in range(self.MapH * self.MapW)]
 
