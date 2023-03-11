@@ -123,7 +123,7 @@ if __name__ == '__main__':
             rain.startUpGame()
     elif firstPicker == '4':
         clear()
-        setUpInfoPicker = str(input("This Python program was made by MF366.\n[1] Go to GitHub\n[2] Change Player Name\n[3] Report a bug\n[4] Recommend a new feature\nType here please: "))
+        setUpInfoPicker = str(input("This Python program was made by MF366.\n[1] Go to GitHub\n[2] Change Player Name\n[3] Report a bug\n[4] Recommend a new feature\n[5] What's new over here?\nType here please: "))
         if setUpInfoPicker == '1':
             clear()
             webbrowser.open('https://github.com/MF366-Coding/The-Ultimate-Minigame-Collection')
@@ -149,4 +149,8 @@ if __name__ == '__main__':
         elif setUpInfoPicker == '5':
             clear()
             news.RunCode()
+        elif setUpInfoPicker == '6':
+            clear()
+            print("I really don't think you were suppose to be able to read this but...\nI also don't care about it...\nEnjoy this useless secret!")
+            quit()
                 
