@@ -19,7 +19,7 @@ def LoadText():
     for _ in range(8): TITLE += txt.readline()
     for _ in range(10):
         temp = ''
-        for z in range(5): temp += txt.readline().removesuffix('\n')
+        for z in range(5): temp += txt.readline().replace('\n', '')
         NUMBERS.append(temp)
 
 def PrintText(text):
@@ -380,3 +380,6 @@ def RunPong():
         if keyboard.is_pressed('3'):
             break
     sys.exit()
+
+if __name__ == '__main__':
+    RunPong()
