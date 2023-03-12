@@ -6,9 +6,7 @@ This is a console game where you can simply have fun...
 Note: you must run the main.py file - not the others!!!
 
 # Pong Minigame
-To run the Pong Minigame on Linux, you'll need the Python3.10.10 or newer and the <code>keyboard</code> module installed as <code>sudo</code>, that is <code>sudo pip install keyboard</code>.
-
-You'll also need to run <code>sudo python3 main.py</code> instead of <code>python3 main.py</code>.
+The Pong Minigame isn't working vey well on Linux so please be patient while me and Norb are working on a better solution.
 
 # Collaborators
 - Norb
