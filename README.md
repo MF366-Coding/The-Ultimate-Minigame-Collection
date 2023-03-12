@@ -3,7 +3,7 @@ This is a console game where you can simply have fun...
 
 ### We are asking for brand new jokes for the Jokes mode! Only appropriate jokes please.
 
-Note: you must run the main.py file - not the others!!!
+### Note: you must run the main.py file - not the others!!!
 
 # Setup
 Step-by-step guide: How to install TUMC?
