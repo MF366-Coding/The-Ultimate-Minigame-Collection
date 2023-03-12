@@ -19,12 +19,6 @@ import rain
 import news
 import PongEngine
 
-'''
-To Do:
-- Minigame: Pong (Norb)
-- Tools (Me)
-'''
-
 # Minigame Picker
 if __name__ == '__main__':
     with open('tumc_init.txt', 'r', encoding='utf-8') as textkoolInit:
@@ -37,7 +31,7 @@ if __name__ == '__main__':
     firstPicker = str(input(str(textkoolExtract)+"\nWelcome back, "+playerNameExtract+"!\nPlease select an option.\n[1] Minigames\n[2] Utilities\n[3] Extra options\n[4] Settings n' Info\nType here please: "))
     if firstPicker == '1':
         clear()
-        minigamePicker = str(input("Please select a minigame.\n[1] RandomGuesser\n[2] Pong CMD Edition by Norb (Windows Only - check README.md\nType here please: "))
+        minigamePicker = str(input("Please select a minigame.\n[1] RandomGuesser\n[2] Pong CMD Edition by Norb (Check README.md before playing)\nType here please: "))
         if minigamePicker == '1':
             clear()
             randPicker = str(input("Select a difficulty.\n[1] Easy\n[2] Normal\n[3] Hard\n[4] Impossible\nType here please: "))

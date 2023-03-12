@@ -1,21 +1,20 @@
 # The Ultimate Minigame Collection
 This is a console game where you can simply have fun...
 
-**We are asking for brand new jokes for the Jokes mode! Only appropriate jokes please.**
+### We are asking for brand new jokes for the Jokes mode! Only appropriate jokes please.
 
 Note: you must run the main.py file - not the others!!!
 
-## Fight your BFF and go toxic on him/her 😉😅
-Show what you're made of by scoring more than 100... or maybe not!
+# Pong Minigame
+To run the Pong Minigame on Linux, you'll need the Python3.10.10 or newer and the <code>keyboard</code> module installed as <code>sudo</code>, that is <code>sudo pip install keyboard</code>.
 
-## Just because you won, please do not RickRoll your friend
-It is a really evil punishment. Instead, beat their best score and friendly roast them! Yep, you just lost a friend. 😎 
+You'll also need to run <code>sudo python3 main.py</code> instead of <code>python3 main.py</code>.
 
-## I am always fixing my code... 
-Except when I am not. But that is only when I can't. 🤡😆
+# Collaborators
+- Norb
+- Me
 
-## Anyways,... 
-Thanks, @norbcodes (general coding stuff). 
+LMAO
 
-## See ya... 
+# See ya... 
 Hope you enjoy my game... 😉😁
