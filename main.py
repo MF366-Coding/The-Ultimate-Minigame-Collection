@@ -1,7 +1,7 @@
 '''
 Entire code by: MF366
-UwU
-GitHub | Discord | YouTube (for Gaming)
+
+GitHub | Discord | YouTube
 
 Hope you enjoy this game.
 
