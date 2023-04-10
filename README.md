@@ -43,7 +43,7 @@ You may also create a shortcut for it on the Desktop... whatever you'd like to d
 And thanks for using TUMC! :+1:
 
 # Pong Minigame
-The Pong Minigame isn't working vey well on Linux so please be patient while me and Norb are working on a better solution.
+The Pong Minigame isn't working very well on Linux so please be patient while me and Norb are working on a better solution.
 
 # Collaborators
 - Norb
