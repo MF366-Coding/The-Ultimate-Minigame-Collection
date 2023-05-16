@@ -1,23 +1,209 @@
 '''
-Entire code by: MF366
+Entire code by: MF366 (except for PongEngine by Norb)
 
-GitHub | Discord | YouTube
+GitHub       | Discord                | YouTube
+MF366-Coding | not gonna tell you lel | @mf_366
 
-Hope you enjoy this game.
+Hope you enjoy this little game!
 
-More minigames to come as soon as possible.
+More minigames and tools to come as soon as possible.
 '''
 
 # Importing the needed modules
-import numRand
 from random import randint, shuffle
-import botTalker
-import swapSentence
 import webbrowser
-from clsCmd import clear
 import rain
-import news
 import PongEngine
+import sys
+from os import system
+
+def clear():
+    # Find the system
+    if sys.platform == "linux" or sys.platform == "darwin":
+        clearingCommand = 'clear'
+        system(clearingCommand)
+    elif sys.platform == "win32":
+        clearingCommand = 'cls'
+        system(clearingCommand)
+    else:
+        system("clear")
+
+class swapSentence:
+    @staticmethod
+    def professionalSwapper(textToSwap):
+        clear()
+        swappedText = textToSwap[::-1]
+        print("Given sentence: "+textToSwap+"\nInverted sentence: "+swappedText+"\n")
+        review = str(input("Is this correct?\nType 'yes' or 'no' here please: "))
+        if review == 'yes':
+            clear()
+            print('Thank you!\n')
+            quit()
+        if review == 'no':
+            print('We are sorry to hear that...\n')
+            goToIssues = str(input("Would you like to report this issue?\nIf so, you need a screenshot of the output.\nType 'yes' or 'no' here please: "))
+            if goToIssues == 'yes':
+                webbrowser.open('https://github.com/MF366-Coding/The-Ultimate-Minigame-Collection/issues')
+                quit()
+
+class news:
+    @staticmethod
+    def RunCode():
+        updates = input("[ WHAT'S NEW IN TUMC? ]\nBiggest update to TUMC so far...\n\n[ Pong Minigame by Norb ]\nPlay Pong on the Command Prompt. Yes, you heard this right!!!\nNote that this only runs on Windows.\nCheck README.md for more info.\n\n[ This Section ]\nYeah, that's right! Now, this app comes with a ''What's new?'' section!\n\n[ AT GITHUB ]\nFor more info, check https://github.com/MF366-Coding/The-Ultimate-Minigame-Collection.\n\nThanks for downloading this project.\n\nMade by MF366.\n\n< Press ENTER to go to the repo. >\n< Type 'quit' and hit ENTER to quit the app. >\n\nYour choice: ")
+        if updates == 'quit':
+            quit()
+        else:
+            webbrowser.open('https://github.com/MF366-Coding/The-Ultimate-Minigame-Collection')
+
+class numRand:
+    @staticmethod
+    def easyMode():
+        print("You'll have to guess what's the secret number between 0 and 100. You have a limited number of attempts.\nEasy, right? Maybe...\n")
+        attempts = 7
+        secret = randint(0, 100)
+        for i in range(attempts):
+            number = int(input("\nYour guess please: "))
+            if number == secret:
+                clear()
+                print('\nWow! You won!\n')
+                return True
+            elif number > secret:
+                print('\nTry a smaller number...')
+            else:
+                print('\nTry a bigger number...')
+        clear()
+        print('Sorry, you lost...\nThe number was '+str(secret)+'.\n')
+
+    @staticmethod
+    def normalMode():
+        print("You'll have to guess what's the secret number between 0 and 100. You have a limited number of attempts.\nEasy, right? Maybe...\n")
+        attempts = 5
+        secret = randint(0, 100)
+        for i in range(attempts):
+            number = int(input("\nYour guess please: "))
+            if number == secret:
+                clear()
+                print('\nWow! You won!\n')
+                return True
+            elif number > secret:
+                print('\nTry a smaller number...')
+            else:
+                print('\nTry a bigger number...')
+        clear()
+        print('Sorry, you lost...\nThe number was '+str(secret)+'.\n')
+
+    @staticmethod
+    def hardMode():
+        print("You'll have to guess what's the secret number between 0 and 100. You have a limited number of attempts.\nEasy, right? Maybe...\n")
+        attempts = 3
+        secret = randint(0, 100)
+        for i in range(attempts):
+            number = int(input("\nYour guess please: "))
+            if number == secret:
+                clear()
+                print('\nWow! You won!\n')
+                return True
+            elif number > secret:
+                print('\nTry a smaller number...')
+            else:
+                print('\nTry a bigger number...')
+        clear()
+        print('Sorry, you lost...\nThe number was '+str(secret)+'.\n')
+
+    @staticmethod
+    def extremeMode():
+        print("You think you can play The Impossible Mode?\nLOL I bet you're not gonna make it!\n")
+        attempts = 2
+        secret = randint(0, 100)
+        for i in range(attempts):
+            number = int(input("\nYour guess please: "))
+            if number == secret:
+                clear()
+                print('\nHOW??? You are truly amazing!!!\n')
+                return True
+            elif number > secret:
+                print('\nTry a smaller number...')
+            else: # Nice line
+                print('\nTry a bigger number...')
+        clear()
+        print('LOL I told you you were gonna lose...\nThe number was '+str(secret)+'.\n')
+
+class botTalker:
+    @staticmethod
+    def talkToCarl():
+        quittingAsk = False
+        quittingNumber = 0
+        with open('carl.txt', 'r') as carlFile:
+            carlExtract = carlFile.read()
+            carlFile.close()
+            carl = carlExtract.split('//')
+        clear()
+        while quittingAsk == False:
+            recommendGame = str(input('Input: '))
+            print('Output: '+carl[quittingNumber])
+            quittingNumber += 1
+            if quittingNumber == 13:
+                quit()
+            if recommendGame == 'quit':
+                quittingAsk = True
+                quit()
+
+    @staticmethod
+    def talkToAnna():
+        quittingAsk = False
+        quittingNumber = 0
+        with open('anna.txt', 'r') as annaFile:
+            annaExtract = annaFile.read()
+            annaFile.close()
+            anna = annaExtract.split('//')
+        clear()
+        while quittingAsk == False:
+            recommendGame = str(input('Input: '))
+            print('Output: '+anna[quittingNumber])
+            quittingNumber += 1
+            if quittingNumber == 11:
+                quit()
+            if recommendGame == 'quit':
+                quittingAsk = True
+                quit()
+
+    @staticmethod
+    def talkToZang():
+        quittingAsk = False
+        quittingNumber = 0
+        with open('zang.txt', 'r') as zangFile:
+            zangExtract = zangFile.read()
+            zangFile.close()
+            zang = zangExtract.split('//')
+        clear()
+        while quittingAsk == False:
+            recommendGame = str(input('Input: '))
+            print('Output: '+zang[quittingNumber])
+            quittingNumber += 1
+            if quittingNumber == 3:
+                quit()
+            if recommendGame == 'quit':
+                quittingAsk = True
+                quit()
+
+    @staticmethod
+    def talkToURMOM():
+        quittingAsk = False
+        quittingNumber = 0
+        with open('ur-mom.txt', 'r') as urmomFile:
+            urmomExtract = urmomFile.read()
+            urmomFile.close()
+            urmom = urmomExtract.split('//')
+        clear()
+        while quittingAsk == False:
+            recommendGame = str(input('Input: '))
+            print('Output: '+urmom[quittingNumber]) # Truly a really nice line
+            quittingNumber += 1
+            if quittingNumber == 13:
+                quit()
+            if recommendGame == 'quit':
+                quittingAsk = True
+                quit()
 
 # Minigame Picker
 if __name__ == '__main__':
@@ -69,7 +255,7 @@ if __name__ == '__main__':
                 jokes = jokesExtract.split('//')
                 jokesFile.close()
 
-            quittingAsk = False 
+            quittingAsk = False
 
             jokeArray = []
             def regenJokes():
@@ -147,4 +333,3 @@ if __name__ == '__main__':
             clear()
             print("I really don't think you were suppose to be able to read this but...\nI also don't care about it...\nEnjoy this useless secret!")
             quit()
-                

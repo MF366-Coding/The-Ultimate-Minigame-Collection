@@ -3,12 +3,27 @@
 # SPOILER ALERT: Code after line 127 contains SPOILERS
 
 # Importing the needed modules
-from clsCmd import clear
+import sys
+from os import system
+
+def clear():
+    # Find the system
+    if sys.platform == "linux" or sys.platform == "darwin":
+        clearingCommand = 'clear'
+        system(clearingCommand)
+    elif sys.platform == "win32":
+        clearingCommand = 'cls'
+        system(clearingCommand)
+    else:
+        system("clear")
 
 '''
 You're not allowed to see the story without running the code!
+
 Or else: it would ruin it (spoilers right?).
+
 So yeah...
+
 DON'T DO IT! Just... DON'T!!!
 
 
@@ -66,7 +81,7 @@ DON'T DO IT! Just... DON'T!!!
 
 
 
-What a nice blanc line!
+
 
 
 
@@ -150,7 +165,7 @@ def gameEngine(number):
         input("I'm going home...\n[At HOME] Bobby (the dog), wassup fella?\n")
         input("I didn't get the job but whatever...\nI'm kinda sad, you know...\n")
         input("I hope my life gets betteeeeeeer...\n[TRIPPED DOWN THE STAIRS]\nB-b-obby...\n[BLACKS OUT]\n")
-        input("Find out what happens next when Chapter 2 launches (next update)!\n")
+        input("Find out what happens next in Chapter 2!\n")
     elif number == 2:
         input("Chapter 002\n=================\n")
         input("[AT THE HOSPITAL] Where... where am I?\n")
@@ -172,7 +187,7 @@ def gameEngine(number):
 
 def startUpGame():
     clear()
-    print('Just imagine what is being said and relax that way!\n')
+    print('Just imagine what is being said and relax that way!\n\n')
     startUp = int(input('Hit ENTER to skip a sentence!\nCurrently available chapters: 1 and 2\nType the number of the Chapter you would like to start with: '))
     clear()
     gameEngine(startUp)
