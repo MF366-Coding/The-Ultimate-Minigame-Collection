@@ -1,12 +1,23 @@
 # By Norb#1414 (Github: https://github.com/norbcodes)
 
 # Import the goodies!
-from clsCmd import clear
 from math import radians, degrees
 from random import randint, choice
 from time import sleep
 import sys
+from os import system
 import keyboard
+
+def clear():
+    # Find the system
+    if sys.platform == "linux" or sys.platform == "darwin":
+        clearingCommand = 'clear'
+        system(clearingCommand)
+    elif sys.platform == "win32":
+        clearingCommand = 'cls'
+        system(clearingCommand)
+    else:
+        system("clear")
 
 # CONSTANTS
 FPS = 15
