@@ -55,6 +55,7 @@ class news:
         else:
             webbrowser.open('https://github.com/MF366-Coding/The-Ultimate-Minigame-Collection')
 
+
 class numRand:
     @staticmethod
     def easyMode():
@@ -142,7 +143,7 @@ class botTalker:
             recommendGame = str(input('Input: '))
             print('Output: '+carl[quittingNumber])
             quittingNumber += 1
-            if quittingNumber == 13:
+            if quittingNumber == 15:
                 quit()
             if recommendGame == 'quit':
                 quittingAsk = True
@@ -207,6 +208,7 @@ class botTalker:
 
 # Minigame Picker
 if __name__ == '__main__':
+    clear()
     with open('tumc_init.txt', 'r', encoding='utf-8') as textkoolInit:
         textkoolExtract = textkoolInit.read()
         textkoolInit.close()
@@ -236,6 +238,7 @@ if __name__ == '__main__':
         elif minigamePicker == '2':
             clear()
             PongEngine.RunPong()
+            
     if firstPicker == '2':
         clear()
         toolPicker = str(input("Please select a tool.\n[1] SentenceInvertor\nType here please: "))
@@ -244,6 +247,7 @@ if __name__ == '__main__':
             textToSwap = str(input("Type the sentence you would like to invert here please:\n"))
             clear()
             swapSentence.professionalSwapper(textToSwap=textToSwap)
+            
     if firstPicker == '3':
         clear()
         extraPicker = str(input("Please select an extra option.\n[1] Jokes\n[2] What game should I play?\n[3] Talk to a bot (because I have no better stuff to do)\n[4] It's raining outside (Sad story)\nType here please: "))
@@ -286,7 +290,7 @@ if __name__ == '__main__':
                     quit()
         if extraPicker == '3':
             clear()
-            print("Welcome to BotTalker v1.1.0.\nJust select a character and you're good to start!\n")
+            print("Welcome to BotTalker v1.1.1.\nJust select a character and you're good to start!\n")
             botTalkerInit = str(input("Select a bot to talk with.\n[1] Carl\n[2] Anna\n[3] ur mom (lol)\n[4] Mr. Zang (Awarded business man)\nType here please: "))
             if botTalkerInit == '1':
                 botTalker.talkToCarl()
