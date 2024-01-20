@@ -1,9 +1,5 @@
-# The Ultimate Minigame Collection
-This is a console game where you can simply have fun...
-
-### We are asking for brand new jokes for the Jokes mode! Only appropriate jokes please.
-
-### Note: you must run the main.py file - not the others!!!
+# The Ultimate Minigame & Utils Collection (TUMUC)
+**TUMC is now including more utilities and is getting a major update that will change how you browse through the program.**
 
 # Setup
 Step-by-step guide: How to install TUMC?
