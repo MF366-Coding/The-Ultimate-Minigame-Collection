@@ -1,4 +1,4 @@
-
 modules.zip
-__pycache__/PongEngine.cpython-310.pyc
-__pycache__/rain.cpython-310.pyc
+__pycache__
+.pytest_cache
+.vscode

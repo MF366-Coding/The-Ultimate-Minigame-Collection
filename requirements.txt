@@ -1,0 +1,5 @@
+colorama==0.4.6
+keyboard==0.13.5
+lxml==5.1.0
+Requests==2.31.0
+simple_webbrowser==0.0.7
