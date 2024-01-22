@@ -203,6 +203,8 @@ class MenuIsFinal(Exception): ...
 class CommandNotFound(Exception): ...
 class MenuMustBeFinal(Exception): ...
 
+PACKED = None
+
 class Menu:
     def __init__(self, screen_obj: Screen, menu_type: Literal["start", "sub"], title: int, prev_menu = None, subtitle: str = "", description: str = "") -> None:
         """
@@ -280,9 +282,19 @@ class Menu:
     def finalize(self) -> bool:
         return self.final()
     
+    def get_previous_menu(self) -> Any:
+        return self.prev_menu
+    
+    def get_prev(self):
+        return self.get_previous_menu()
+    
     def pack(self):
         if not self.__final:
             raise MenuMustBeFinal("The Menu must be set as final before packing.")
+        
+        global PACKED
+        
+        PACKED = self
         
         self._screen.clear()
         
@@ -308,6 +320,9 @@ class Menu:
     
     def __str__(self) -> str:
         return ASCII_TITLES[self.title]
+
+def go_to(_menu: Menu | Screen | None = PACKED):
+    return _menu.pack()
 
 h = Stack()
 t = Stack()
