@@ -1,51 +1,33 @@
-# The Ultimate Minigame & Utils Collection (TUMUC)
+# The Ultimate Minigame Collection (TUMC)
 **TUMC is now including more utilities and is getting a major update that will change how you browse through the program.**
 
-# Setup
-Step-by-step guide: How to install TUMC?
+# Installation
 
-## Step 1: Download the *.zip file in the Releases section
-On GitHub, go to Releases and download the latest zipped folder.
+## Linux
+```bash
+git clone https://github.com/MF366-Coding/The-Ultimate-Minigame-Collection.git
+cd The-Ultimate-Minigame-Collection
+pip install -r requirements.txt
+python3 main.py
+```
+If you'd like to create a Virtual Environment, you can also do that.
 
-Extract **all** of the files to the **exact** same location.
+## Windows
+For Windows, there are 2 special versions in the **Releases** section:
+- Portable (x64, amd64, ia64)
+- Installer/Setup (x64, amd64, ia64)
 
-If any file is in another location, separated from the others, the app won't run.
+Additionally, you can also do the exact same thing as you did for Linux, in case you have the following things installed:
+- Python 3 (overall, it's better to use Python 3.10 or newer)
+- Git
+- `pip` on PATH (optional - explanation below)
 
-## Step 2: Running the app
-On the folder where the files are, open the Command Prompt/Terminal.
+If `pip` is not on the PATH, you can do:
+```powershell
+python -m pip install -r requirements.txt
+```
 
-If you are using Linux, right-click and select _Open in Terminal_ and run <code>python3 main.py</code>.
+## Use of 'python'/'python3'
+Usually, on Linux, Python is refered to as `python3` but on Windows it usually is `python`.
 
-In case you're using Windows, go to the directory bar (on File Explorer) of the folder containing the files, click it and type 'cmd' and hit ENTER.
-You should now be looking at the Command Prompt.
-Depending on how you installed Python, the command may change.
-
-### Installation Type 1: PATH commands
-In case you installed the PATH commands for Python on Windows, run <code>python main.py</code>.
-
-### Installation Type 2: No PATH commands
-Otherwise, you might need to actually run the <code>python.exe</code> file.
-
-## Step 3.5: Quick Important Note
-Never change anything you aren't sure about in any of the files, since making one wrong change might break the app.
-
-Please, only change things if you're experienced with Python or know what you're doing.
-
-## Step 4: Enjoy
-You can now use the app as you want.
-
-You may also create a shortcut for it on the Desktop... whatever you'd like to do.
-
-And thanks for using TUMC! :+1:
-
-# Pong Minigame
-The Pong Minigame isn't working very well on Linux so please be patient while me and Norb are working on a better solution.
-
-# Collaborators
-- Norb
-- Me
-
-LMAO
-
-# See ya... 
-Hope you enjoy my game... 😉😁
+> ### Enjoy!

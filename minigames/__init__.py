@@ -1,6 +1,13 @@
-import imp, os
+import importlib.machinery, os
 
-PongEngine = imp.load_source("PongEngine.py", os.path.join(os.path.dirname(__file__), "PongEngine.py"))
+def load_module_from_source(module_name: str, source_path: str):
+    loader = importlib.machinery.SourceFileLoader(module_name, source_path)
+    spec = importlib.util.spec_from_loader(module_name, loader)
+    module = importlib.util.module_from_spec(spec)
+    loader.exec_module(module)
+    return module
+
+PongEngine = load_module_from_source("PongEngine", os.path.join(os.path.dirname(__file__), "PongEngine.py"))
 
 class Pong:
     def __init__(self, *options) -> None:
@@ -8,3 +15,6 @@ class Pong:
     
     def run(self):
         PongEngine.RunPong()
+        
+    def pack(self):
+        self.run()
