@@ -11,8 +11,9 @@ More minigames and tools to come as soon as possible.
 
 # [i] Importing the needed modules
 from random import randint, shuffle, choice
-from simple_webbrowser import simple_webbrowser
+import simple_webbrowser as swb
 import minigames
+from setting_manager import get_settings, save_settings
 import tools
 import extras
 from colorama import Fore, Back, Style
@@ -52,6 +53,8 @@ ASCII_TITLES: list | None = []
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "titles.txt"), "r", encoding="utf-8") as titles_file:
     ASCII_TITLES = [line for line in titles_file.readlines()]
     titles_file.close()
+
+settings: dict[str, Any] | None = get_settings()
 
 class Stack:
     def __init__(self, initial_values: list | tuple = ()):
@@ -181,8 +184,8 @@ class Screen:
     def _leave(self, __status = None) -> None:
         sys.exit(__status)
         
-    def pack(self, __status_code = None) -> None:
-        self._leave(__status_code)
+    def pack(self, *args) -> None:
+        self._leave()
         
     def clear(self):       
         def unix_clear():
@@ -230,23 +233,24 @@ class Menu:
             self.prev_menu = prev_menu
         
         self.description = description
-        self._commands: list = []
+        self._commands: list[list] = []
         self.__final = False
         return
 
-    def add_command(self, name: str, menu):
+    def add_command(self, name: str, menu, _type: Literal["menu", "minigame"]):
         """
         add_command adds a new command to the Menu
 
         Args:
             name (str): the name of the command
             menu (Menu): submenu that should be called
+            _type (either 'menu' or 'minigame'): if the command refers to a minigame or to a menu/Screen object
         """
         
         if self.__final:
             raise MenuIsFinal("Menu has been set to final and can't be changed.")
         
-        self._commands.append([name, menu])
+        self._commands.append([name, menu, _type])
 
     def command_index(self, name: str) -> int:
         index: int = 0
@@ -262,18 +266,22 @@ class Menu:
     def get_name(self, __ind: int) -> str:
         return self._commands[__ind][0]
     
-    def _call_command(self, __ind: int):
-        self._commands[__ind][1].pack()
+    def _call_command(self, __ind: int):       
+        if self._commands[__ind][2] == 'minigame':
+            a = self._commands[__ind][1](globals())
+            return a
+        
+        return self._commands[__ind][1].pack()
     
     def final(self) -> bool:
         if not self.__final:
             self.__final = True
             
             if self.prev_menu == self._screen:
-                self._commands.append(["Exit", self.prev_menu])
+                self._commands.append(["Exit", self.prev_menu, "menu"])
                 
             else:
-                self._commands.append(["Go back", self.prev_menu])            
+                self._commands.append(["Go back", self.prev_menu, "menu"])            
             
             return self.prev_menu
         
@@ -288,7 +296,7 @@ class Menu:
     def get_prev(self):
         return self.get_previous_menu()
     
-    def pack(self):
+    def pack(self, *args):
         if not self.__final:
             raise MenuMustBeFinal("The Menu must be set as final before packing.")
         
@@ -321,7 +329,7 @@ class Menu:
     def __str__(self) -> str:
         return ASCII_TITLES[self.title]
 
-def go_to(_menu: Menu | Screen | None = PACKED):
+def go_to(_menu: Menu | Screen):
     return _menu.pack()
 
 h = Stack()
@@ -329,13 +337,17 @@ t = Stack()
 s = Screen(h, "The Ultimate Minigame Collection", "Copyright (C) 2024  MF366", (Fore.YELLOW, Back.RESET, Style.BRIGHT))
 
 start_menu = Menu(s, "start", 0, None, "The Ultimate Minigame Collection featuring useful tools as well.")
-test_menu = Menu(s, "sub", 6, start_menu, "Testing, testing", "Is this a description??")
+minigame_menu = Menu(s, "sub", 6, start_menu, "Fun minigames for you", "TUMC's original minigames")
+
+# [*] Adding commands and submenus
+minigame_menu.add_command("Clicker Game", minigames.ClickerGame, "minigame")
+minigame_menu.add_command("Commandline Pong (By: Norb)", minigames.Pong, "minigame")
 
 # [*] Mark submenus as final
-test_menu.final()
+minigame_menu.final()
 
 # [*] Finish Starting Menu setup
-start_menu.add_command("What is this menu?", test_menu)
+start_menu.add_command("Minigames", minigame_menu, "menu")
 start_menu.final()
 start_menu.pack()
 

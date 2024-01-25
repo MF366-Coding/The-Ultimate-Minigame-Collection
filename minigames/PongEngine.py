@@ -5,7 +5,7 @@ from math import radians, degrees
 from random import randint, choice
 from time import sleep
 import sys
-from os import system
+from os import system, path
 import keyboard
 
 def clear():
@@ -26,7 +26,7 @@ NUMBERS = []
 
 def LoadText():
     global TITLE
-    txt = open('PongTitles.txt', 'rt', encoding='UTF-8')
+    txt = open(path.join(path.dirname(__file__), 'PongTitles.txt'), 'rt', encoding='UTF-8')
     for _ in range(8): TITLE += txt.readline()
     for _ in range(10):
         temp = ''
@@ -291,7 +291,7 @@ class WorldClass:
         if self.P2_pad_y + (1 if dir else -1) in range(2, self.MapH - 2):
             self.P2_pad_y += 1 if dir else -1
 
-def RunPong():
+def RunPong(_tumc_globs: dict):
     LoadText()
     while True:
         clear()
@@ -390,5 +390,7 @@ def RunPong():
 
         if keyboard.is_pressed('3'):
             break
-    sys.exit()
+    
+    clear()
+    _tumc_globs['go_to'](_tumc_globs['PACKED'])
     
