@@ -319,9 +319,13 @@ class Menu:
             self._screen.print(f"{Fore.YELLOW}[{x}]{Fore.RESET} {command[0]}\n")
             x += 1
         
-        tag = int(input("\nRun command: "))
-        
-        self._call_command(tag)
+        try:
+            tag = int(input("\nRun command: "))
+
+            self._call_command(tag)
+            
+        except (TypeError, IndexError, ValueError):
+            self.pack()
         
     def __len__(self):
         return len(self._commands)
@@ -338,13 +342,18 @@ s = Screen(h, "The Ultimate Minigame Collection", "Copyright (C) 2024  MF366", (
 
 start_menu = Menu(s, "start", 0, None, "The Ultimate Minigame Collection featuring useful tools as well.")
 minigame_menu = Menu(s, "sub", 6, start_menu, "Fun minigames for you", "TUMC's original minigames")
+tools_menu = Menu(s, "sub", 12, minigame_menu, "Some tools you might like", "This is only a submenu for testing purposes.\nAfter creating all the minigames and tools for the next release, all the menus will be organized.")
 
 # [*] Adding commands and submenus
 minigame_menu.add_command("Clicker Game", minigames.ClickerGame, "minigame")
 minigame_menu.add_command("Commandline Pong (By: Norb)", minigames.Pong, "minigame")
+minigame_menu.add_command("Tools??", tools_menu, 'menu')
+
+tools_menu.add_command("Sound Room", tools.SoundRoom, "minigame")
 
 # [*] Mark submenus as final
 minigame_menu.final()
+tools_menu.final()
 
 # [*] Finish Starting Menu setup
 start_menu.add_command("Minigames", minigame_menu, "menu")
