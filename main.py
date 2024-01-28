@@ -118,6 +118,8 @@ class Screen:
         self.style_colorama = colorama_props[2]
         self.history = history_stack
         self.platform = None
+        
+        self.COLORMAPS = [(Fore.RED, Fore.LIGHTRED_EX), (Fore.BLUE, Fore.LIGHTBLUE_EX), (Fore.GREEN, Fore.LIGHTGREEN_EX), (Fore.CYAN, Fore.LIGHTCYAN_EX), (Fore.MAGENTA, Fore.LIGHTMAGENTA_EX), (Fore.YELLOW, Fore.LIGHTYELLOW_EX)]
 
         if sys.platform == "win32":
             self.platform = "mswin"
@@ -152,17 +154,34 @@ class Screen:
 
         return sys.stdout.write(str(__s))
     
-    def print_ascii(self, __list: Iterable[str], __ind: int, __m: bool = True) -> int:              
-        COLORMAPS = ((Fore.RED, Fore.MAGENTA), (Fore.BLUE, Fore.CYAN), (Fore.GREEN, Fore.YELLOW))
+    def print_ascii(self, __list: Iterable[str], __ind: int, height: int = 6, __m: bool = True) -> int:
+        """
+        print_ascii prints a decorated ASCII art based on an iterable containing them
+
+        Args:
+            __list (Iterable[str]): the list where all the ASCII art, splitted by the \\n escape character.
+            __ind (int): the starting index.
+            height (int): when should the current ASCII art end. The index is converted to __ind + height
+            __m (bool, optional): should the current ASCII art be saved in the stdout memory? Defaults to True.
+
+        Returns:
+            int: the value of the stdout.write operation
+        """
+                    
+        # /-/ COLORMAPS = [(Fore.RED, Fore.MAGENTA), (Fore.BLUE, Fore.CYAN), (Fore.GREEN, Fore.YELLOW)]
+        COLORMAPS_ORIG = [(Fore.RED, Fore.LIGHTRED_EX), (Fore.BLUE, Fore.LIGHTBLUE_EX), (Fore.GREEN, Fore.LIGHTGREEN_EX), (Fore.CYAN, Fore.LIGHTCYAN_EX), (Fore.MAGENTA, Fore.LIGHTMAGENTA_EX), (Fore.YELLOW, Fore.LIGHTYELLOW_EX)]
         
-        color_index = randint(0, len(COLORMAPS) - 1)
+        if self.COLORMAPS == COLORMAPS_ORIG:
+            shuffle(self.COLORMAPS)
+        
+        color_index = 0
         cur_index = 0
         
         __lines: str = ""
         
-        for i in range(int(__ind), int(__ind + 6)):
+        for i in range(int(__ind), int(__ind + height)):
             if i == int(__ind):
-                self.print(COLORMAPS[color_index][cur_index])
+                self.print(self.COLORMAPS[color_index][cur_index])
             
             if clamp(cur_index, 0, 1) == 1:
                 cur_index -= 1
@@ -170,7 +189,9 @@ class Screen:
             elif clamp(cur_index, 0, 1) == 0:
                 cur_index += 1
                 
-            __lines += f"{__list[i]}{COLORMAPS[color_index][cur_index]}"
+            __lines += f"{__list[i]}{self.COLORMAPS[color_index][cur_index]}"
+        
+        self.COLORMAPS.append(self.COLORMAPS.pop(color_index))
         
         self.print_lines(__lines.split("\n"), "\n", True)
         
