@@ -131,7 +131,7 @@ class SoundRoom:
             i = Fore.YELLOW
                
         if __arg.lower() == 'volume':
-            write(f"{Fore.BLUE}Current volume level as a float: {i}{cur_volume}")
+            write(f"{Fore.BLUE}Current volume level as a float: {i}{cur_volume}\n")
             return
         
         try:
@@ -141,7 +141,7 @@ class SoundRoom:
             vol = cur_volume
         
         self.CHANNEL.set_volume(vol)
-        write(f"{Fore.CYAN}The volume level has been adjusted.")
+        write(f"{Fore.CYAN}The volume level has been adjusted.\n")
 
     def run(self) -> bool:
         while True:
