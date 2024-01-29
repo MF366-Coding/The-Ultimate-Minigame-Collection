@@ -10,7 +10,7 @@ More minigames and tools to come as soon as possible.
 '''
 
 # [i] Importing the needed modules
-from random import randint, shuffle, choice
+import random
 import simple_webbrowser as swb
 import minigames
 from setting_manager import get_settings, save_settings
@@ -119,7 +119,9 @@ class Screen:
         self.history = history_stack
         self.platform = None
         
-        self.COLORMAPS = [(Fore.RED, Fore.LIGHTRED_EX), (Fore.BLUE, Fore.LIGHTBLUE_EX), (Fore.GREEN, Fore.LIGHTGREEN_EX), (Fore.CYAN, Fore.LIGHTCYAN_EX), (Fore.MAGENTA, Fore.LIGHTMAGENTA_EX), (Fore.YELLOW, Fore.LIGHTYELLOW_EX)]
+        self.COLORMAPS_ORIG = [(Fore.RED, Fore.LIGHTRED_EX), (Fore.BLUE, Fore.LIGHTBLUE_EX), (Fore.GREEN, Fore.LIGHTGREEN_EX), (Fore.CYAN, Fore.LIGHTCYAN_EX), (Fore.MAGENTA, Fore.LIGHTMAGENTA_EX), (Fore.YELLOW, Fore.LIGHTYELLOW_EX)]
+        random.shuffle(self.COLORMAPS_ORIG)
+        self.COLORMAPS = self.COLORMAPS_ORIG[:]
 
         if sys.platform == "win32":
             self.platform = "mswin"
@@ -169,10 +171,10 @@ class Screen:
         """
                     
         # /-/ COLORMAPS = [(Fore.RED, Fore.MAGENTA), (Fore.BLUE, Fore.CYAN), (Fore.GREEN, Fore.YELLOW)]
-        COLORMAPS_ORIG = [(Fore.RED, Fore.LIGHTRED_EX), (Fore.BLUE, Fore.LIGHTBLUE_EX), (Fore.GREEN, Fore.LIGHTGREEN_EX), (Fore.CYAN, Fore.LIGHTCYAN_EX), (Fore.MAGENTA, Fore.LIGHTMAGENTA_EX), (Fore.YELLOW, Fore.LIGHTYELLOW_EX)]
         
-        if self.COLORMAPS == COLORMAPS_ORIG:
-            shuffle(self.COLORMAPS)
+        if self.COLORMAPS[0] == self.COLORMAPS_ORIG[0] and random.randint(0, 20) == 0:
+            random.shuffle(self.COLORMAPS_ORIG)
+            self.COLORMAPS = self.COLORMAPS_ORIG[:]
         
         color_index = 0
         cur_index = 0
@@ -361,6 +363,7 @@ h = Stack()
 t = Stack()
 s = Screen(h, "The Ultimate Minigame Collection", "Copyright (C) 2024  MF366", (Fore.YELLOW, Back.RESET, Style.BRIGHT))
 
+# [!!] This is gonna be organized tomorrow! (hopefully!)
 start_menu = Menu(s, "start", 0, None, "The Ultimate Minigame Collection featuring useful tools as well.")
 minigame_menu = Menu(s, "sub", 6, start_menu, "Fun minigames for you", "TUMC's original minigames")
 tools_menu = Menu(s, "sub", 12, minigame_menu, "Some tools you might like", "This is only a submenu for testing purposes.\nAfter creating all the minigames and tools for the next release, all the menus will be organized.")

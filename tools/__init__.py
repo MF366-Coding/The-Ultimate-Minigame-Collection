@@ -1,10 +1,8 @@
-from ast import Call
 from typing import Any, Callable, Literal, SupportsFloat
-import requests, os, sys
+import os, sys, keyboard, pyautogui, random
 from pygame import mixer
 from colorama import Fore
-from datetime import datetime
-from simple_webbrowser import BuildSearchURL, youtube
+from simple_webbrowser import youtube
 
 def clamp(_val: SupportsFloat, _min: SupportsFloat, _max: SupportsFloat) -> SupportsFloat:
     if _val < _min:
@@ -213,7 +211,10 @@ class YTDownloader:
         __audio: bool = input(f"{Fore.LIGHTYELLOW_EX}Download as audio? ").lower().strip()[0]
         youtube.start_download(__link, None, True if __audio == 'y' else False, 'highest', 'mp4', False, False, 1, 'exact', disable_output=False)
     
+        input("Hit ENTER to leave... ")
+        
+        self.__leave()
+    
     def __leave(self) -> Literal[True]:
         self.GLOBALS["go_to"](self.GLOBALS['PACKED'])
         return True
-    
