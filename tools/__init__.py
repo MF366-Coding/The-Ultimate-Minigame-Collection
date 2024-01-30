@@ -21,12 +21,10 @@ class SoundRoom:
         self.GLOBALS['s'].clear()
 
         self.CHANNEL = mixer.music
-
-        self.cur_snd: mixer.Sound | None = None
         
         self.cur_file: str = ''
 
-        self.help_msg = f"""{Fore.YELLOW} ---- SOUNDROOM ---- {Fore.RESET}
+        self.help_msg = f"""{Fore.YELLOW}{' SoundRoom by MF366 '.center(55, "-")}{Fore.RESET}
 {Fore.MAGENTA}load <path>{Fore.RESET} - Load the file located at <path>
 {Fore.BLUE}unload{Fore.RESET} - Unload the currently loaded file
 {Fore.CYAN}play <[loops]>{Fore.RESET} - Play the currently loaded file from the beggining with <[loops]> amount of loops. <[loops]> is an integer and an optional parameter and it's default value is 0 (a.k.a. play the music one time only)
@@ -54,6 +52,7 @@ class SoundRoom:
             write(f"{Fore.RED}Please stop the current music first.{Fore.RESET}\n\n")
             return
         
+        self.cur_file = ''
         self.CHANNEL.unload()               
         write(f"{Fore.YELLOW}PRO TIP: Loading a music automatically unloads the current one.{Fore.RESET}\n\n")
         write(f"{Fore.GREEN}The current music has been unloaded.{Fore.RESET}\n\n")
@@ -77,7 +76,35 @@ class SoundRoom:
             self.CHANNEL.unload()
             self.CHANNEL.load(new_path)
             
-            write(f"{Fore.GREEN}'{new_path}' has been loaded :){Fore.RESET}\n\n")
+            write(f"{Fore.GREEN}'{new_path}' has been loaded and the initial queue has been set up too :){Fore.RESET}\n\n")
+
+    def __queue(self, __args: str, write: Callable, silent: bool = False):
+        try:
+            self.cur_file = new_path = __args[4:]
+            
+        except Exception:
+            if not silent:
+                write(f"{Fore.RED}Invalid syntax for the 'load' command, missing the path argument.{Fore.RESET}\nCorrect use would be: 'load /path/to/file.example'.\n\n")
+
+        else:
+            if not os.path.exists(new_path) or os.path.isdir(new_path):
+                if not silent:
+                    write(f"{Fore.RED}'{new_path}' doesn't seem to be a valid file.{Fore.RESET}\n\n")
+                return
+
+            self.CHANNEL.queue(new_path)
+            
+            if not silent:
+                write(f"{Fore.GREEN}'{new_path}' has been added to the current queue :){Fore.RESET}\n\n")
+
+    def __rewind(self):
+        self.CHANNEL.rewind()
+    
+    def __previous(self):
+        self.CHANNEL.set_pos(self.CHANNEL.get_pos() - 1)
+    
+    def __skip(self):
+        self.CHANNEL.set_pos(self.CHANNEL.get_pos() + 1)
 
     def __play(self, __args: str, write: Callable):
         try:
@@ -131,7 +158,7 @@ class SoundRoom:
             i = Fore.YELLOW
                
         if __arg.lower() == 'volume':
-            write(f"{Fore.BLUE}Current volume level as a float: {i}{cur_volume}\n")
+            write(f"{Fore.LIGHTBLUE_EX}Current volume level as a float: {i}{cur_volume}\n")
             return
         
         try:
@@ -144,10 +171,19 @@ class SoundRoom:
         write(f"{Fore.CYAN}The volume level has been adjusted.\n")
 
     def run(self) -> bool:
+        write = self.GLOBALS['s'].print
+        
+        '''
+        # [!] Needs to be fixed if I want to use them eventually
+        elif __b.startswith('prev'):
+            self.__previous()    
+        
+        elif __b.startswith('next'):
+            self.__skip()
+        '''
+        
         while True:
-            write = self.GLOBALS['s'].print
-
-            __a = input(f"{Fore.YELLOW}>>> {Fore.RESET}").strip()
+            __a = input(f"{Fore.YELLOW}{self.cur_file + ' ' if os.path.isfile(self.cur_file) else ''}>>> {Fore.RESET}").strip()
             __b = __a.lower()
 
             if __b in self.LEAVE_CMDS:
@@ -156,7 +192,13 @@ class SoundRoom:
             if __b == 'unload':
                 self.__unload(write)
 
-            elif __b.startswith("load"):
+            elif __b.startswith("add"):     
+                self.__queue(__a, write)
+                
+            elif __b.startswith('rewind'):
+                self.__rewind()
+            
+            elif __b.startswith('load'):
                 self.__load(__a, write)
 
             elif __b == "clear" or __b == 'cls':
@@ -176,7 +218,7 @@ class SoundRoom:
                 
             elif __b.startswith('volume'):
                 self.__adjust_volume(__a, write)
-                
+            
             elif __b == 'status':
                 __status = self.CHANNEL.get_busy()
                 __c = Fore.GREEN
@@ -188,6 +230,9 @@ class SoundRoom:
                 
             elif __b == 'help':
                 write(f"{self.help_msg}\n\n")
+            
+            elif __a == '':
+                continue
             
             else:
                 write(f"{Fore.RED}This command doesn't seem to exist or was used in a wrong way.{Fore.RESET}\nUse 'help' to... well, get help on how to use the Sound Room.\n\n")

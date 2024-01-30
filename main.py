@@ -260,7 +260,7 @@ class Menu:
         self.__final = False
         return
 
-    def add_command(self, name: str, menu, _type: Literal["menu", "minigame"]):
+    def add_command(self, name: str, menu, _type: Literal["menu", "minigame", "tool", "extra", "info"]):
         """
         add_command adds a new command to the Menu
 
@@ -268,10 +268,15 @@ class Menu:
             name (str): the name of the command
             menu (Menu): submenu that should be called
             _type (either 'menu' or 'minigame'): if the command refers to a minigame or to a menu/Screen object
+            
+        For _type, 'tool', 'extra' and 'info' are also allowed but they all refer to 'minigame'.
         """
         
         if self.__final:
             raise MenuIsFinal("Menu has been set to final and can't be changed.")
+        
+        if _type != 'menu':
+            _type = 'minigame'
         
         self._commands.append([name, menu, _type])
 
@@ -364,14 +369,13 @@ t = Stack()
 s = Screen(h, "The Ultimate Minigame Collection", "Copyright (C) 2024  MF366", (Fore.YELLOW, Back.RESET, Style.BRIGHT))
 
 # [!!] This is gonna be organized tomorrow! (hopefully!)
-start_menu = Menu(s, "start", 0, None, "The Ultimate Minigame Collection featuring useful tools as well.")
-minigame_menu = Menu(s, "sub", 6, start_menu, "Fun minigames for you", "TUMC's original minigames")
-tools_menu = Menu(s, "sub", 12, minigame_menu, "Some tools you might like", "This is only a submenu for testing purposes.\nAfter creating all the minigames and tools for the next release, all the menus will be organized.")
+start_menu = Menu(s, "start", 0, None, "The Ultimate Minigame Collection featuring useful tools and extras as well.")
+minigame_menu = Menu(s, "sub", 6, start_menu, "Minigames are cool. Here are some of ours.", "TUMC's original and new minigames.")
+tools_menu = Menu(s, "sub", 12, start_menu, "Need a tool? Find one in here!", "Tools to help out with pretty much everything, from downloading YouTube videos and playlists to finding more information about your OS.")
 
 # [*] Adding commands and submenus
-minigame_menu.add_command("Clicker Game", minigames.ClickerGame, "minigame")
-minigame_menu.add_command("Commandline Pong (By: Norb)", minigames.Pong, "minigame")
-minigame_menu.add_command("Tools??", tools_menu, 'menu')
+minigame_menu.add_command("Commandline Pong by Norb", minigames.Pong, "minigame")
+minigame_menu.add_command("Clicker Game (BETA)", minigames.ClickerGame, "minigame")
 
 tools_menu.add_command("Sound Room", tools.SoundRoom, "minigame")
 
@@ -381,6 +385,7 @@ tools_menu.final()
 
 # [*] Finish Starting Menu setup
 start_menu.add_command("Minigames", minigame_menu, "menu")
+start_menu.add_command("Tools", tools_menu, "menu")
 start_menu.final()
 start_menu.pack()
 
