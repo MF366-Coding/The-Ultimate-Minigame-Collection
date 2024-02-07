@@ -34,7 +34,7 @@ def LoadText():
         NUMBERS.append(temp)
 
 def PrintText(text):
-    sys.stdout.write(text)  # lel
+    print(text, end="")  # lel
 
 class WorldClass:
     P1_pad_y = None  # Initialize during object creation
@@ -323,6 +323,7 @@ def RunPong(_tumc_globs: dict):
                 return_back = True
 
             if not return_back:
+                clear()
                 gameRunning = True
                 World = WorldClass(ai_option)
                 World.Render()
