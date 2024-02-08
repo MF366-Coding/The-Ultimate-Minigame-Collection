@@ -5,6 +5,7 @@ from typing import Any # /-/, Literal
 import tracemalloc
 import time
 import minigames.PongEngine as PongEngine
+from colorama import Fore, Back
 
 tracemalloc.start()
 
@@ -83,3 +84,52 @@ class ClickerGame:
         self.GLOBALS["s"].clear()
         self.GLOBALS["go_to"](self.GLOBALS['PACKED'])
         return True
+
+class __TEST_MINIGAME:
+    def __init__(self, _globs: dict[str, Any], _force_quit: bool = False) -> None:
+        """
+        XXX THIS CLASS WAS ONLY FOR TESTING PLEASE DO NOT USE THIS FOR ACTUAL PLAYING
+        
+        I mean, you can play it but you'll be bored.
+        
+        AND IT WAS ONLY MEANT FOR TESTING!
+        
+        The code isn't all here either ways.
+        """
+        
+        self.GLOBALS = _globs
+        
+        if _force_quit:
+            self.GLOBALS['s'].exit()
+        
+        self.BG_COLORS = (Back.WHITE, Back.BLACK)
+        self.FG_COLORS = (Fore.BLACK, Fore.WHITE)
+        self.cur_index = 0
+        
+        self.__switch()
+
+    def write(self, __s: str) -> int:
+        return self.GLOBALS['s'].print(__s)
+
+    def __swap(self) -> int:
+        self.cur_index = int(not self.cur_index)
+        
+        return self.cur_index
+    
+    def __switch(self) -> tuple[str, str, int]:
+        """
+        Internal function.
+
+        Returns:
+            tuple[str, str, int]: bg escape code, fg escape code and tuple index for them
+        """
+        
+        self.GLOBALS['s'].clear()
+        
+        self.__swap()
+        self.write(self.BG_COLORS[self.cur_index])
+        self.write(self.FG_COLORS[self.cur_index])
+        
+        self.GLOBALS['s'].print('\n'*100)
+        
+        return (self.BG_COLORS[self.cur_index], self.FG_COLORS[self.cur_index], self.cur_index)
