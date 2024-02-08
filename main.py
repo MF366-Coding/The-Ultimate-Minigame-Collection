@@ -1,25 +1,21 @@
 '''
-Entire code by: MF366 (except for PongEngine by Norb)
+Main TUMC code and some tools/minigames/extras by: MF366
 
 GitHub       | YouTube
 MF366-Coding | @mf_366
 
 Hope you enjoy this little game!
 
-More minigames and tools to come as soon as possible.
+More minigames and tools to come ASAP.
 '''
 
 # [i] Importing the needed modules
-import random
+import random, platform, os, sys
 import simple_webbrowser as swb
-import minigames
+import minigames, tools, extras
 from setting_manager import get_settings, save_settings
-import tools
-import extras
 from colorama import Fore, Back, Style
-import sys
 from typing import Callable, Any, Literal, Iterable
-import os
 
 def clamp(val: int | float, _min: int | float = 0, _max: int | float = 100) -> int | float:
     if val < _min:
@@ -29,24 +25,6 @@ def clamp(val: int | float, _min: int | float = 0, _max: int | float = 100) -> i
         return _max
       
     return val
-    
-def switch(__a: Any, cases: tuple | list, functions: tuple[Callable] | list[Callable], exception_case: Callable, break_on_case: bool = True):
-    x: int = 0
-    one_done: bool = False
-
-    for i in cases:
-        if __a == i:
-            functions[x]()
-            one_done = True
-            x += 1
-
-            if break_on_case:
-                return
-
-    if one_done == False:
-        exception_case()
-
-    return
 
 ASCII_TITLES: list | None = []
 
@@ -150,11 +128,24 @@ class Screen:
 
         return
 
-    def print(self, __s: str | Any, __m: bool = False) -> int | Any:
+    def print(self, __s: str | Any, __m: bool = False) -> int:
+        """
+        Internal function.
+        """
+        
         if __m:
             self.history.push(str(__s))
 
         return sys.stdout.write(str(__s))
+    
+    def write(self, abc: str, *params: bool) -> int:
+        """
+        Internal function.
+        """
+        if len(params) == 0:
+            params = (False)
+        
+        return self.print(abc, params[0])
     
     def print_ascii(self, __list: Iterable[str], __ind: int, height: int = 6, __m: bool = True) -> int:
         """
@@ -200,30 +191,92 @@ class Screen:
         return self.print(f"\n{Fore.RESET}")
         
     def print_lines(self, __lines: Iterable[str], __sep: str = "\n", __m: bool = False):
+        """
+        Internal function.
+        """
+        
         for line in __lines:
             self.print(line, __m)
             self.print(__sep)
 
     def _leave(self, __status = None) -> None:
+        """
+        Internal function.
+        """
+        
         sys.exit(__status)
         
     def pack(self, *args) -> None:
-        self._leave()
+        """
+        Internal function.
+        """
         
-    def clear(self):       
-        def unix_clear():
-            os.system("clear")
+        self._leave()
+    
+    def exit(self) -> None:
+        """
+        Internal function.
+        """
+        
+        self._leave()
+    
+    def get_details(self) -> tuple[str]:
+        """
+        get_platform_data returns some data about the current OS
 
-        def old_linux_clear():
+        It uses `sys`, `os` and `platform` for this purpose.
+
+        Data by tuple index:
+            0. Platform Name (either `mswin`, `unix`, `oldlinux` or `unidentified`; given by `Screen.platform`)
+            1. Platform Name (given by `os.name`)
+            2. Platform Name (either `win32`, `linux`, `linux2`, `darwin`, ...; given by `sys.platform`)
+            3. OS Bitness (either `32bit` or `64bit`; given by `platform.architecture()[0]`)
+            4. `platform.architecture()[1]`
+            5. Python Executable (an absolute path; given by `sys.executable`)
+            6. Machine Type (e.g. 'i386'; given by `platform.machine()`)
+
+        Returns:
+            tuple[str]: all the data above, all of it in a form of string, packed as a tuple
+        """
+        
+        __pl = platform.architecture()
+        
+        return (self.platform, os.name, sys.platform, __pl[0], __pl[1], sys.executable, platform.machine())        
+    
+    def clear(self):
+        """
+        clear clears the terminal screen.
+        """
+        
+        def unix_clear():
+            """
+            unix_clear clears the screen the Linux/Darwin (macOS) way.
+            """
             os.system("clear")
 
         def win_clear():
+            """
+            win_clear clears the screen the Win32 (Microsoft Windows) way.
+            """
             os.system("cls")
 
         def other_clear():
+            """
+            other_clear clears the screen by adding 150 newlines
+            """
             sys.stdout.write("\n"*150)
 
-        switch(self.platform, ("mswin", "unix", "oldlinux", "unidentified"), (win_clear, unix_clear, old_linux_clear, other_clear), other_clear)
+        match self.platform:
+            case 'mswin':
+                win_clear()
+                
+            case 'unix':
+                unix_clear()
+                
+            # [!] Compatibility with Linux (python 2) has ended and so it will be treated as Unidentified OS
+                
+            case _:
+                other_clear()
 
 class MenuIsFinal(Exception): ...
 class CommandNotFound(Exception): ...
@@ -325,10 +378,12 @@ class Menu:
         return self.get_previous_menu()
     
     def pack(self, *args):
+        global settings, PACKED
+        
+        settings = get_settings()
+        
         if not self.__final:
             raise MenuMustBeFinal("The Menu must be set as final before packing.")
-        
-        global PACKED
         
         PACKED = self
         
