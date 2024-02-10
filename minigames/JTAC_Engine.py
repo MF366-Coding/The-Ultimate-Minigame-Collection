@@ -8,17 +8,7 @@
 import os
 import sys
 
-# SHAMELESSLY COPIED <3
-def clear():
-    # Find the system
-    if sys.platform == "linux" or sys.platform == "darwin":
-        clearingCommand = 'clear'
-        os.system(clearingCommand)
-    elif sys.platform == "win32":
-        clearingCommand = 'cls'
-        os.system(clearingCommand)
-    else:
-        os.system("clear")
+clear = None
 
 # Constants
 DISTANCE: int = 40174991951811150
@@ -31,9 +21,25 @@ def LoadTitle():
         for _ in range(8): TITLE += File.readline()
 
 def RunGame(_tumc_globs: dict):
-    global TITLE
+    global TITLE, clear
+
+    # Yep
+    if clear is None: clear = _tumc_globs["s"].clear
+
     LoadTitle()
-    print(TITLE)
 
 if __name__ == '__main__':
+    # THIS RUNS ONLY WHEN THIS FILE IS RAN AS A STANDALONE SCRIPT
+    def _c():
+        if sys.platform == "linux" or sys.platform == "darwin":
+            clearingCommand = 'clear'
+            os.system(clearingCommand)
+        elif sys.platform == "win32":
+            clearingCommand = 'cls'
+            os.system(clearingCommand)
+        else:
+            os.system("clear")
+    clear = _c
+    del _c
+    # Run
     RunGame( {"go_to": ""} )
