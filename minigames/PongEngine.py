@@ -394,4 +394,3 @@ def RunPong(_tumc_globs: dict):
     
     clear()
     _tumc_globs['go_to'](_tumc_globs['PACKED'])
-    
