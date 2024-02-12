@@ -5,6 +5,8 @@
 # Upgrade your ship by getting better engines!
 # This is an idle game, meaning time passes *even after the game is closed.*
 
+# Screen is 80x15 characters big.
+
 import os
 import sys
 import time
