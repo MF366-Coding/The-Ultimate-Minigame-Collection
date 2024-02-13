@@ -5,11 +5,11 @@
 # Upgrade your ship by getting better engines!
 # This is an idle game, meaning time passes *even after the game is closed.*
 
-# Screen is 80x15 characters big.
-
+import pygame  # YYYIIIAAAAAAAAAAAAAHH!!!
+import textwrap
 import os
 import sys
-import time
+import random
 
 clear = None
 
@@ -17,9 +17,44 @@ clear = None
 _ALPHA_CENTAURI: int = 40_174_991_951_811_150  # meters
 TITLE: str = ""
 FPS: int = 60
+WINDOW_WIDTH = 80
+WINDOW_HEIGHT = 25
 # Engines (values not accurate to real life)
 BaseEngine: tuple[int, int] = (2, 0.2)
 # yay
+
+class ScreenClass:
+    _f: list[str] = None
+
+    def __init__(self):
+        global WINDOW_WIDTH, WINDOW_HEIGHT
+        # Hey
+        self._f = [" "] * (WINDOW_HEIGHT * WINDOW_WIDTH)
+
+    def Clear(self):
+        self._f = [" "] * (WINDOW_HEIGHT * WINDOW_WIDTH)
+
+    def Fill(self, char: str):
+        self._f = [char] * (WINDOW_HEIGHT * WINDOW_WIDTH)
+
+    def Show(self):
+        for char in enumerate(self._f):
+            print(char[1], end="")
+            if (char[0] + 1) % 80 == 0:
+                print("\n", end="")
+
+    def Draw(self, string: str, x: int, y: int):
+        # NEWLINES ACCEPTED!
+        _stuff = string.split("\n")
+        _y = y
+        for row in _stuff:
+            _x = x
+            for char in row:
+                self._f[_x + _y * WINDOW_WIDTH] = char
+                _x += 1
+            _y += 1
+
+Screen: ScreenClass = ScreenClass()
 
 def LoadTitle():
     global TITLE
@@ -58,12 +93,30 @@ class WorldClass:
         self.Player = PlayerClass()
         self.Distance = _ALPHA_CENTAURI
 
+    def Render(self):
+        global WINDOW_WIDTH, WINDOW_HEIGHT, Screen
+
+        # Bring the cursor to the top of the screen
+        print("\033[H", end="")
+
+        # Test thing to blit
+        Screen.Draw("BRUH\nYou serious?\nNAAAh", random.randint(0, 1), random.randint(0, 1))
+
 def JTAC():
-    global clear, FPS
+    global clear, FPS, Screen
+    clear()
+
     World: WorldClass = WorldClass()
+    Clock = pygame.time.Clock()
 
     while True:
-        time.sleep(1/FPS)
+        Clock.tick(FPS)
+
+        Screen.Clear()
+
+        World.Render()
+
+        Screen.Show()
 
 def RunGame(_tumc_globs: dict):
     global TITLE, clear
