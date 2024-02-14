@@ -116,11 +116,15 @@ class WorldClass:
         # Bring the cursor to the top of the screen
         print("\033[H", end="")
 
+        Screen.Clear()
+
         Screen.Draw(UI_BORDER, 0, 0, "\033[97m")
         # Test thing to blit
         Screen.Draw("Hello\nHi", random.randint(1, 2), random.randint(1, 2), "\033[33m")
         Screen.Draw("Bruh", random.randint(5, 9), random.randint(9, 12), "\033[31m")
         Screen.Draw("A..\n.B.\n..C", random.randint(15, 16), random.randint(17, 21), "\033[36m")
+
+        Screen.Show()
 
 def JTAC():
     global clear, FPS, Screen
@@ -135,10 +139,6 @@ def JTAC():
         Clock.tick(FPS)
 
         World.Render()
-
-        Screen.Show()
-
-        Screen.Clear()
 
 def RunGame(_tumc_globs: dict):
     global TITLE, clear
