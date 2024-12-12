@@ -1,5 +1,5 @@
 # The Ultimate Minigame Collection (TUMC)
-**TUMC is now including more utilities and is getting a major update that will change how you browse through the program.**
+> ## It's time to wave TUMC goodbye. TUMC is being replaced by... [ContenterX](https://github.com/MF366-Coding/ContenterX). It will allow you to use TUMC like you used it before but now with more everything! A lot more tools, utils and games. It won't let you down.
 
 # Installation
 
