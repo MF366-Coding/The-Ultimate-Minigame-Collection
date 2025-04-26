@@ -1,5 +1,6 @@
 # The Ultimate Minigame Collection (TUMC)
-> ## It's time to wave TUMC goodbye. TUMC is being replaced by... [ContenterX](https://github.com/MF366-Coding/ContenterX). It will allow you to use TUMC like you used it before but now with more everything! A lot more tools, utils and games. It won't let you down.
+> [!IMPORTANT]
+> It's time to wave TUMC goodbye. Due to how old TUMC is, it's getting increasingly harder to go through its messy codebase. That and the fact I went to release a version that I ended up not releasing caused me to finally archive this project. A part of this program's history lives on Norb's Commandline Pong (https://GitHub.com/norbcodes/CommandlinePong). Thank you.
 
 # Installation
 
