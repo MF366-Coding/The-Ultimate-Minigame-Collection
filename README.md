@@ -1,6 +1,6 @@
 # The Ultimate Minigame Collection (TUMC)
 > [!IMPORTANT]
-> It's time to wave TUMC goodbye. Due to how old TUMC is, it's getting increasingly harder to go through its messy codebase. That and the fact I went to release a version that I ended up not releasing caused me to finally archive this project. A part of this program's history lives on Norb's Commandline Pong (https://GitHub.com/norbcodes/CommandlinePong). Thank you.
+> It's time to wave TUMC goodbye. Due to how old TUMC is, it's getting increasingly harder to go through its messy codebase. That and the fact I went to release a version that I ended up not releasing caused me to finally archive this project. A part of this program's history lives on Norb's [Commandline Pong](https://GitHub.com/norbcodes/Commandline-Pong). Thank you.
 
 # Installation
 
